@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGD Hesaraghatta | Neon Sales Dashboard v27.0</title>
+    <title>MGD Hesaraghatta | Neon Sales Dashboard v28.0</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
@@ -15,11 +15,6 @@
             --card-bg: rgba(20, 20, 30, 0.85);
         }
 
-        @font-face {
-            font-family: 'Cyber';
-            src: url('https://fonts.cdnfonts.com/s/29364/Cyberpunk.woff') format('woff');
-        }
-
         body {
             margin: 0;
             padding: 20px;
@@ -28,7 +23,7 @@
             background-size: cover;
             background-attachment: fixed;
             color: white;
-            font-family: 'Cyber', 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
             overflow-x: hidden;
             padding-bottom: 80px;
         }
@@ -36,23 +31,23 @@
         h1, h2, h3 { text-transform: uppercase; letter-spacing: 2px; margin: 0; text-align: center; }
         
         .main-title {
-            font-size: 3.5rem;
+            font-size: 3rem;
             color: var(--neon-blue);
-            text-shadow: 0 0 20px var(--neon-blue), 0 0 50px var(--neon-blue);
+            text-shadow: 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue);
             margin-bottom: 5px;
         }
 
         .sub-title {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             color: var(--neon-gold);
             text-shadow: 0 0 10px var(--neon-gold);
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .section-container {
             background: var(--card-bg);
             border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 20px var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
             border-radius: 20px;
             padding: 30px;
             margin-bottom: 40px;
@@ -60,7 +55,7 @@
         }
 
         .section-header {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             margin-bottom: 30px;
             text-shadow: 0 0 10px white;
         }
@@ -77,14 +72,14 @@
         /* --- Staff Grid --- */
         .staff-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
         }
         .staff-card {
-            background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s;
+            background: rgba(255,255,255,0.03); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s;
         }
         .staff-card:hover { transform: scale(1.02); background: rgba(255,255,255,0.08); }
-        .staff-name-large { font-size: 1.4rem; font-weight: bold; margin-bottom: 5px; }
+        .staff-name-large { font-size: 1.2rem; font-weight: bold; margin-bottom: 5px; }
 
         /* --- Alerts --- */
         .critical {
@@ -93,19 +88,16 @@
             animation: blink 1.5s infinite;
         }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-        .danger-icon { color: var(--neon-red); margin-right: 8px; font-weight: bold; }
 
-        /* --- Neon Ticker (ENHANCED) --- */
+        /* --- Neon Ticker --- */
         .ticker-wrap {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: #000; border-top: 3px solid var(--neon-blue);
             color: var(--neon-blue); overflow: hidden; padding: 12px 0; z-index: 2000;
-            box-shadow: 0 -10px 30px rgba(0, 243, 255, 0.5);
         }
         .ticker-move {
             display: inline-block; white-space: nowrap; padding-left: 100%;
-            animation: ticker 30s linear infinite; font-size: 1.5rem; font-weight: bold;
-            text-shadow: 0 0 10px var(--neon-blue); letter-spacing: 2px;
+            animation: ticker 30s linear infinite; font-size: 1.3rem; font-weight: bold;
         }
         @keyframes ticker { from { transform: translate(0, 0); } to { transform: translate(-100%, 0); } }
 
@@ -118,17 +110,17 @@
         input { background: #111; border: 1px solid var(--neon-blue); color: white; padding: 6px; width: 80px; text-align: center; }
 
         /* --- Dynamic Colors --- */
-        .c-gold { color: var(--neon-gold); text-shadow: 0 0 5px var(--neon-gold); }
-        .c-blue { color: var(--neon-blue); text-shadow: 0 0 5px var(--neon-blue); }
-        .c-green { color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green); }
-        .c-red { color: var(--neon-red); text-shadow: 0 0 5px var(--neon-red); }
+        .c-gold { color: var(--neon-gold); }
+        .c-blue { color: var(--neon-blue); }
+        .c-green { color: var(--neon-green); }
+        .c-red { color: var(--neon-red); }
         .bg-gold { background: var(--neon-gold); } .bg-blue { background: var(--neon-blue); } .bg-green { background: var(--neon-green); } .bg-red { background: var(--neon-red); }
     </style>
 </head>
 <body>
 
     <h1 class="main-title">MGD HESARAGHATTA</h1>
-    <h2 class="sub-title">Managed By Suraj Prakash</h2>
+    <h2 class="sub-title">System Managed By Suraj Prakash | Days Left: 31</h2>
 
     <div class="section-container">
         <h3 class="section-header">TEAM ACHIEVEMENT RACE</h3>
@@ -141,7 +133,7 @@
     </div>
 
     <div class="ticker-wrap">
-        <div class="ticker-move" id="liveTicker">WELCOME COMMANDER SURAJ PRAKASH! STANDINGS UPDATED: TEAM PRECIOUS LEADING AT 31%!</div>
+        <div class="ticker-move" id="liveTicker">LOADING CLOUD DATA...</div>
     </div>
 
     <div class="gear" onclick="openAdmin()">⚙️</div>
@@ -166,7 +158,7 @@
         };
 
         let state = {
-            ticker: "MGD Hesaraghatta: Lakshmi leading at 111%! Team Precious at 31% Achievement! Keep Pushing!",
+            ticker: "MGD Hesaraghatta: Lakshmi leading at 111%! Team Precious at 31%! Team Divine at 16%! Keep pushing team!",
             teams: [
                 { id:'p', name:'(Jaffar Siddik) Team Precious', pct:31, c:'gold', i:'🏎️' },
                 { id:'d', name:'(Manu KR) Team Divine', pct:16, c:'blue', i:'🏍️' },
@@ -234,11 +226,11 @@
                 `;
             });
 
-            // Sort staff by achievement
             state.staff.sort((a,b) => b.p - a.p).forEach(s => {
+                const isCrit = s.p < 5;
                 grid.innerHTML += `
-                    <div class="staff-card ${s.crit ? 'critical' : ''}" onclick="${s.star ? 'party()' : 'clickSfx()'}">
-                        <div class="staff-name-large c-${s.c}">${s.crit ? '⚠️' : ''}${s.n}</div>
+                    <div class="staff-card ${isCrit ? 'critical' : ''}" onclick="${s.star ? 'party()' : 'clickSfx()'}">
+                        <div class="staff-name-large c-${s.c}">${isCrit ? '⚠️ ' : ''}${s.n}</div>
                         <div style="font-size:0.8rem; opacity:0.7;">TEAM ${s.t} | ${s.p}% ACHIEVED</div>
                         <div class="race-track" style="height:10px; margin-top:8px;"><div class="race-bar bg-${s.c}" style="width:${Math.min(s.p, 100)}%"></div></div>
                     </div>
@@ -264,7 +256,7 @@
 
         function saveData() {
             state.ticker = document.getElementById('in-ticker').value || state.ticker;
-            state.teams.forEach((t, i) => { t.pct = document.getElementById(`t-${i}`).value; });
+            state.teams.forEach((t, i) => { t.pct = document.getElementById(`t-${i}`).value; t.crit = t.pct < 10; });
             state.staff.forEach((s, i) => { s.p = document.getElementById(`s-${i}`).value; s.crit = s.p < 5; });
             render();
             document.getElementById('adminModal').style.display = 'none';
