@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Leaderboard v18.0 | MGD Hesaraghatta</title>
+    <title>MGD Hesaraghatta | Leaderboard v19.1</title>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.6.1/firebase-app-compat.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.6.1/firebase-database-compat.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
@@ -23,7 +21,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background-color: var(--primary-bg);
             color: var(--text-color);
             margin: 0;
@@ -36,20 +34,19 @@
 
         .location-header {
             color: var(--accent-gold);
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-weight: 900;
-            letter-spacing: 5px;
+            letter-spacing: 6px;
             margin-bottom: 5px;
-            text-shadow: 0 0 10px rgba(252, 196, 25, 0.5);
+            text-shadow: 0 0 15px rgba(252, 196, 25, 0.4);
         }
 
         .admin-header {
             background: rgba(77, 171, 247, 0.1);
-            backdrop-filter: blur(10px);
             border: 1px solid var(--accent-blue);
             padding: 8px 25px;
             border-radius: 4px;
-            margin-bottom: 5px;
+            margin-bottom: 25px;
             font-size: 0.8rem;
             letter-spacing: 2px;
             color: var(--accent-blue);
@@ -57,226 +54,171 @@
             text-transform: uppercase;
         }
 
-        .timestamp { font-size: 0.7rem; color: #555; margin-bottom: 20px; text-transform: uppercase; }
-
-        /* Ticker */
         .ticker-wrap {
             width: 100%;
             max-width: 1000px;
             background: #1a1a2e;
-            padding: 10px 0;
+            padding: 12px 0;
             margin-bottom: 25px;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
             border: 1px solid #30475e;
         }
-        .ticker-move { display: flex; width: max-content; animation: ticker 25s linear infinite; }
-        .ticker-item { padding: 0 40px; color: var(--accent-gold); font-weight: bold; font-size: 0.9rem; white-space: nowrap; }
+        .ticker-move { display: flex; width: max-content; animation: ticker 30s linear infinite; }
+        .ticker-item { padding: 0 50px; color: var(--accent-gold); font-weight: bold; font-size: 0.9rem; white-space: nowrap; }
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* Main Dashboard */
         .main-card {
             width: 100%;
             max-width: 1000px;
             background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+            padding: 35px;
+            border-radius: 24px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.8);
             margin-bottom: 40px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.03);
         }
 
-        .team-label { font-size: 1.1rem; }
-        .name-bracket { color: var(--sub-text); font-weight: normal; margin-left: 8px; font-size: 0.95rem; }
-        .name-bracket b { color: #fff; font-weight: 900; text-transform: uppercase; }
+        .team-label { font-size: 1.15rem; font-weight: bold; }
+        .name-bracket { color: var(--sub-text); font-weight: normal; margin-left: 10px; font-size: 1rem; }
+        /* BOLDS THE LEADER NAMES */
+        .name-bracket b { color: #fff; font-weight: 900; }
         
         .team-precious-text { color: var(--accent-gold); }
         .team-divine-text { color: var(--accent-blue); }
         .team-mine-text { color: var(--accent-green); }
         .team-zoul-text { color: var(--accent-red); }
 
-        .row { margin-bottom: 28px; }
-        .info { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px; align-items: center; }
+        .row { margin-bottom: 30px; }
+        .info { display: flex; justify-content: space-between; margin-bottom: 12px; align-items: center; }
         
-        .progress-box { background: #0a0a1a; height: 34px; border-radius: 17px; position: relative; border: 1px solid #222; overflow: hidden; }
-        .fill { height: 100%; border-radius: 17px; transition: width 2s cubic-bezier(0.1, 0.5, 0.5, 1); }
-        .avatar { position: absolute; right: 8px; top: 4px; font-size: 1.2rem; z-index: 2; }
+        .progress-box { background: #000; height: 36px; border-radius: 18px; position: relative; border: 1px solid #222; overflow: hidden; }
+        .fill { height: 100%; border-radius: 18px; transition: width 2.5s cubic-bezier(0.1, 0.5, 0.5, 1); }
+        .avatar { position: absolute; right: 10px; top: 4px; font-size: 1.3rem; z-index: 2; }
 
-        #p-fill { background: linear-gradient(90deg, #ffd700, #fff3bf); }
-        #d-fill { background: linear-gradient(90deg, #74c0fc, #d0ebff); }
-        #m-fill { background: linear-gradient(90deg, #63e6be, #c3fae8); }
-        #z-fill { background: linear-gradient(90deg, #ff8787, #ffc9c9); }
+        #p-fill { background: linear-gradient(90deg, #ffd700, #fcc419); }
+        #d-fill { background: linear-gradient(90deg, #4dabf7, #228be6); }
+        #m-fill { background: linear-gradient(90deg, #51cf66, #40c057); }
+        #z-fill { background: linear-gradient(90deg, #ff4d4d, #e03131); }
 
-        /* Staff Grid */
         .staff-grid {
             width: 100%;
             max-width: 1000px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 15px;
+            padding-bottom: 50px;
         }
 
         .staff-card {
             background: var(--card-bg);
-            padding: 15px;
-            border-radius: 12px;
-            border-left: 5px solid #333;
-            position: relative;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: all 0.2s ease-out;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 6px solid #333;
+            transition: all 0.3s;
             cursor: pointer;
         }
 
-        .staff-card:hover { transform: translateY(-3px); background: #1a1a35; border-left-width: 8px; }
+        .staff-card:hover { transform: translateY(-5px); background: #1a1a35; }
+        .staff-card.selected { border: 2px solid var(--accent-blue) !important; box-shadow: 0 0 15px var(--accent-blue); }
+        
         .leader-card { background: var(--leader-bg); }
-        .top-leader { border: 2px solid var(--accent-gold); box-shadow: 0 0 15px rgba(252, 196, 25, 0.4); }
-        .no-growth-card { filter: grayscale(1); opacity: 0.5; }
+        .top-leader { border: 2px solid var(--accent-gold); }
 
-        /* Duel Tool */
         #duel-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 3000;
+            background: rgba(0,0,0,0.97);
+            z-index: 9999;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(5px);
         }
-        .duel-container { display: flex; align-items: center; gap: 30px; flex-wrap: wrap; justify-content: center; }
-        .duel-box { 
-            background: #111122; padding: 30px; border-radius: 20px; text-align: center; 
-            min-width: 200px; border: 2px solid #333;
-        }
-        .vs-circle {
-            background: var(--accent-red); width: 60px; height: 60px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-weight: 900;
-        }
-
-        .footer { margin-top: 50px; color: #333; font-weight: bold; letter-spacing: 2px; font-size: 0.7rem; }
+        .duel-vs { background: var(--accent-red); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; margin: 0 20px; }
     </style>
 </head>
-<body onclick="initAudio()">
+<body>
 
     <div class="location-header">MGD HESARAGHATTA</div>
-    <div class="admin-header">SYSTEM MANAGED BY SURAJ PRAKASH</div>
-    <div class="timestamp">STABLE BUILD v18.0 | DEC 25, 2025</div>
+    <div class="admin-header">MANAGED BY SURAJ PRAKASH</div>
 
     <div class="ticker-wrap">
         <div class="ticker-move">
             <div class="ticker-item">🏆 TOP PERFORMER: LAKSHMI (111%)</div>
             <div class="ticker-item">🔥 TEAM PRECIOUS: 31% ACHIEVED</div>
             <div class="ticker-item">⚡ TEAM DIVINE: 16% ACHIEVED</div>
-            <div class="ticker-item">⭐ MEGHANA: 48% ACHIEVED</div>
+            <div class="ticker-item">🏆 TOP PERFORMER: LAKSHMI (111%)</div>
         </div>
     </div>
 
     <div class="main-card">
-        <h3 style="margin-top:0; color:var(--accent-gold); text-align:center; letter-spacing: 2px;">TEAM ACHIEVEMENT RACE</h3>
-        
         <div class="row">
             <div class="info">
                 <span class="team-label"><span class="team-precious-text">💎 Team Precious</span> <span class="name-bracket">(<b>Jaffar</b>)</span></span>
-                <span style="color:var(--accent-gold)">31%</span>
+                <span style="color:var(--accent-gold); font-weight:900;">31%</span>
             </div>
             <div class="progress-box"><div id="p-fill" class="fill" style="width: 31%;"><span class="avatar">🏎️</span></div></div>
         </div>
-
         <div class="row">
             <div class="info">
                 <span class="team-label"><span class="team-divine-text">⚡ Team Divine</span> <span class="name-bracket">(<b>Manu</b>)</span></span>
-                <span style="color:var(--accent-blue)">16%</span>
+                <span style="color:var(--accent-blue); font-weight:900;">16%</span>
             </div>
             <div class="progress-box"><div id="d-fill" class="fill" style="width: 16%;"><span class="avatar">🏍️</span></div></div>
-        </div>
-
-        <div class="row">
-            <div class="info">
-                <span class="team-label"><span class="team-mine-text">📊 Team Mine</span> <span class="name-bracket">(<b>Niveditha</b>)</span></span>
-                <span style="color:var(--accent-green)">8%</span>
-            </div>
-            <div class="progress-box"><div id="m-fill" class="fill" style="width: 8%;"><span class="avatar">🏃</span></div></div>
-        </div>
-
-        <div class="row">
-            <div class="info">
-                <span class="team-label"><span class="team-zoul-text">🚀 Team Zoul</span> <span class="name-bracket">(<b>Boregowda</b>)</span></span>
-                <span style="color:var(--accent-red)">4%</span>
-            </div>
-            <div class="progress-box"><div id="z-fill" class="fill" style="width: 4%;"><span class="avatar">🚶</span></div></div>
         </div>
     </div>
 
     <div class="staff-grid" id="staff-container"></div>
 
     <div id="duel-overlay" onclick="closeDuel()">
-        <h2 style="color:var(--accent-gold);">PERFORMANCE DUEL</h2>
-        <div class="duel-container" id="duel-content"></div>
-        <p style="color:#444; margin-top:20px;">Click to resume</p>
+        <h1 style="color:var(--accent-gold);">PERFORMANCE DUEL</h1>
+        <div style="display:flex; align-items:center;" id="duel-content"></div>
     </div>
-
-    <div class="footer">STABLE VERSION FOR PEENYA SHOWROOM</div>
 
     <script>
         const staffData = [
             { n: "JAFFAR SIDDIK", t: "Precious", p: 31, l: true },
             { n: "MANU KR", t: "Divine", p: 16, l: true },
-            { n: "NIVEDITHA S", t: "Mine", p: 8, l: true },
-            { n: "BOREGOWDA", t: "Zoul", p: 4, l: true },
             { n: "LAKSHMI", t: "Precious", p: 111 },
-            { n: "RAJESH", t: "Precious", p: 50 },
             { n: "MEGHANA", t: "Divine", p: 48 },
-            { n: "SANDYA", t: "Divine", p: 36 },
-            { n: "KALLAPPA", t: "Mine", p: 23 },
-            { n: "SACHIN K", t: "Zoul", p: 15 },
-            { n: "MAHESH", t: "Mine", p: 0 }
+            { n: "SANDYA", t: "Divine", p: 36 }
         ];
 
-        let duelSelection = [];
-        let audioCtx;
-
-        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        let duelPool = [];
 
         function renderStaff() {
             const container = document.getElementById('staff-container');
             container.innerHTML = "";
-            staffData.sort((a,b) => (a.l === b.l) ? b.p - a.p : a.l ? -1 : 1);
-
-            staffData.forEach(s => {
+            staffData.forEach((s, idx) => {
                 const card = document.createElement('div');
-                card.className = `staff-card ${s.t} ${s.l ? 'leader-card' : ''} ${s.p === 111 ? 'top-leader' : ''} ${s.p === 0 ? 'no-growth-card' : ''}`;
+                card.className = `staff-card ${s.t} ${s.l ? 'leader-card' : ''} ${s.p === 111 ? 'top-leader' : ''}`;
                 card.onclick = () => {
-                    if (s.p === 111 && typeof confetti === 'function') confetti({ particleCount: 100 });
-                    duelSelection.push(s);
-                    if (duelSelection.length === 2) showDuel();
+                    if(s.p === 111) confetti({ particleCount: 150 });
+                    if(card.classList.contains('selected')) {
+                        card.classList.remove('selected');
+                        duelPool = duelPool.filter(i => i.n !== s.n);
+                    } else if(duelPool.length < 2) {
+                        card.classList.add('selected');
+                        duelPool.push(s);
+                        if(duelPool.length === 2) setTimeout(showDuel, 300);
+                    }
                 };
-
-                card.innerHTML = `
-                    <div style="font-weight:900; font-size:1rem;">${s.n} ${s.p > 100 ? '⭐' : ''}</div>
-                    <div style="font-size:0.7rem; color:#888; margin-top:4px;">${s.t.toUpperCase()} | ${s.p}%</div>
-                    <div style="background:#000; height:4px; margin-top:10px; border-radius:2px;">
-                        <div style="background:var(--accent-blue); width:${Math.min(s.p, 100)}%; height:100%;"></div>
-                    </div>
-                `;
+                card.innerHTML = `<strong>${s.n}</strong><br><small>${s.t} | ${s.p}%</small>`;
                 container.appendChild(card);
             });
         }
 
         function showDuel() {
-            const [s1, s2] = duelSelection;
-            const content = document.getElementById('duel-content');
-            content.innerHTML = `
-                <div class="duel-box"><h3>${s1.n}</h3><h1>${s1.p}%</h1></div>
-                <div class="vs-circle">VS</div>
-                <div class="duel-box"><h3>${s2.n}</h3><h1>${s2.p}%</h1></div>
-            `;
+            const [a, b] = duelPool;
+            document.getElementById('duel-content').innerHTML = `<div><h2>${a.n}</h2><h1>${a.p}%</h1></div><div class="duel-vs">VS</div><div><h2>${b.n}</h2><h1>${b.p}%</h1></div>`;
             document.getElementById('duel-overlay').style.display = 'flex';
         }
 
         function closeDuel() {
             document.getElementById('duel-overlay').style.display = 'none';
-            duelSelection = [];
+            duelPool = [];
+            document.querySelectorAll('.staff-card').forEach(c => c.classList.remove('selected'));
         }
 
         window.onload = renderStaff;
