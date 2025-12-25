@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Leaderboard v17.0 | MGD Hesaraghatta</title>
+    <title>Master Leaderboard v20.0 | MGD Hesaraghatta</title>
     
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
         :root {
@@ -20,6 +18,8 @@
             --accent-green: #51cf66;
             --accent-red: #ff4d4d;
             --sub-text: #a0a0c8;
+            --karnataka-yellow: #f4d03f;
+            --karnataka-red: #c0392b;
         }
 
         body {
@@ -32,15 +32,27 @@
             align-items: center;
             padding: 20px;
             overflow-x: hidden;
+            transition: background 0.5s;
+        }
+
+        /* Karnataka Heritage Header */
+        .karnataka-banner {
+            width: 100%;
+            max-width: 1000px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--karnataka-yellow) 50%, var(--karnataka-red) 50%);
+            margin-bottom: 15px;
+            border-radius: 5px;
         }
 
         .location-header {
             color: var(--accent-gold);
-            font-size: 1.4rem;
+            font-size: 1.8rem;
             font-weight: 900;
-            letter-spacing: 5px;
+            letter-spacing: 6px;
             margin-bottom: 5px;
-            text-shadow: 0 0 10px rgba(252, 196, 25, 0.5);
+            text-shadow: 0 0 15px rgba(252, 196, 25, 0.6);
+            text-align: center;
         }
 
         .admin-header {
@@ -57,9 +69,19 @@
             text-transform: uppercase;
         }
 
-        .timestamp { font-size: 0.7rem; color: #555; margin-bottom: 20px; text-transform: uppercase; }
+        /* Score-based Name Animations */
+        @keyframes pulse-gold { 0% { text-shadow: 0 0 5px var(--accent-gold); } 50% { text-shadow: 0 0 20px var(--accent-gold); } 100% { text-shadow: 0 0 5px var(--accent-gold); } }
+        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
 
-        /* Ticker */
+        .top-performer-anim { animation: pulse-gold 2s infinite; color: var(--accent-gold); }
+        
+        /* Subtle Identifiers */
+        .bottom-performer { border: 1px dashed var(--accent-red) !important; animation: border-glow-red 3s infinite; }
+        @keyframes border-glow-red { 0%, 100% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.2); } 50% { box-shadow: 0 0 15px rgba(255, 77, 77, 0.5); } }
+        
+        .no-growth-tag { font-size: 0.6rem; color: #666; font-style: italic; margin-left: 10px; }
+        .stagnant { filter: grayscale(0.9); opacity: 0.6; }
+
         .ticker-wrap {
             width: 100%;
             max-width: 1000px;
@@ -74,7 +96,7 @@
         .ticker-item { padding: 0 40px; color: var(--accent-gold); font-weight: bold; font-size: 0.9rem; white-space: nowrap; }
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* Main Team Race Card */
+        /* Dashboard */
         .main-card {
             width: 100%;
             max-width: 1000px;
@@ -89,25 +111,15 @@
         .team-label { font-size: 1.1rem; }
         .name-bracket { color: var(--sub-text); font-weight: normal; margin-left: 8px; font-size: 0.95rem; }
         .name-bracket b { color: #fff; text-transform: uppercase; letter-spacing: 1px; }
-        
-        .team-precious-text { color: var(--accent-gold); }
-        .team-divine-text { color: var(--accent-blue); }
-        .team-mine-text { color: var(--accent-green); }
-        .team-zoul-text { color: var(--accent-red); }
 
-        .row { margin-bottom: 28px; }
+        .row { margin-bottom: 28px; transition: transform 0.3s; }
+        .row:hover { transform: scale(1.01); }
         .info { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px; align-items: center; }
-        
+
         .progress-box { background: #0a0a1a; height: 34px; border-radius: 17px; position: relative; border: 1px solid #222; overflow: hidden; }
         .fill { height: 100%; border-radius: 17px; transition: width 2s cubic-bezier(0.1, 0.5, 0.5, 1); position: relative; }
         .avatar { position: absolute; right: 5px; top: 2px; font-size: 1.4rem; }
 
-        #p-fill { background: linear-gradient(90deg, #ffd700, #fff3bf); }
-        #d-fill { background: linear-gradient(90deg, #74c0fc, #d0ebff); }
-        #m-fill { background: linear-gradient(90deg, #63e6be, #c3fae8); }
-        #z-fill { background: linear-gradient(90deg, #ff8787, #ffc9c9); }
-
-        /* Staff Grid */
         .staff-grid {
             width: 100%;
             max-width: 1000px;
@@ -127,26 +139,25 @@
             cursor: pointer;
         }
 
-        .staff-card:hover { transform: translateY(-5px); background: #1a1a35; }
+        .staff-card:hover { transform: translateY(-8px); background: #1a1a35; box-shadow: 0 12px 20px rgba(0,0,0,0.5); }
         .leader-card { background: var(--leader-bg); }
         .top-leader { border: 2px solid var(--accent-gold); box-shadow: 0 0 15px rgba(252, 196, 25, 0.4); }
-        .no-growth-card { filter: grayscale(1); opacity: 0.5; }
 
-        /* Duel Overlay */
         #duel-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
             z-index: 2000;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(10px);
         }
         .duel-container { display: flex; align-items: center; gap: 50px; }
         .duel-box { 
             background: #1a1a3a; padding: 40px; border-radius: 20px; text-align: center; 
-            min-width: 250px; border: 2px solid #333;
+            min-width: 250px; border: 2px solid #333; transition: all 0.5s;
         }
         .vs-circle {
             background: var(--accent-red); width: 80px; height: 80px; border-radius: 50%;
@@ -155,89 +166,51 @@
         }
 
         .footer { margin-top: 50px; color: #444; font-weight: bold; letter-spacing: 2px; font-size: 0.8rem; }
-        .gear { position: fixed; bottom: 15px; right: 15px; cursor: pointer; opacity: 0.1; font-size: 1.5rem; }
+        
+        .click-ripple {
+            position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.3);
+            transform: scale(0); animation: ripple 0.6s linear; pointer-events: none;
+        }
     </style>
 </head>
-<body onclick="initAudio()">
+<body onclick="createRipple(event)">
 
+    <div class="karnataka-banner"></div>
     <div class="location-header">MGD HESARAGHATTA</div>
-    <div class="admin-header">SYSTEM MANAGED BY SURAJ PRAKASH</div>
-    <div class="timestamp">LIVE REPORT: DEC 25, 2025 | 21:00 IST</div>
+    <div class="admin-header">MANAGED BY SURAJ PRAKASH</div>
+    <div id="clock" class="timestamp"></div>
 
     <div class="ticker-wrap">
-        <div class="ticker-move">
-            <div class="ticker-item">🏆 TOP PERFORMER: LAKSHMI (111%)</div>
-            <div class="ticker-item">🔥 TEAM PRECIOUS: 31% ACHIEVED</div>
-            <div class="ticker-item">⚡ TEAM DIVINE: 16% ACHIEVED</div>
-            <div class="ticker-item">⭐ MEGHANA: 48% ACHIEVED</div>
-            <div class="ticker-item">🏆 TOP PERFORMER: LAKSHMI (111%)</div>
-        </div>
+        <div class="ticker-move" id="ticker-content"></div>
     </div>
 
-    <div class="main-card">
+    <div class="main-card" id="team-race">
         <h3 style="margin-top:0; color:var(--accent-gold); text-align:center; letter-spacing: 2px;">TEAM ACHIEVEMENT RACE</h3>
-        
-        <div class="row">
-            <div class="info">
-                <span class="team-label"><span class="team-precious-text">💎 Team Precious</span> <span class="name-bracket">(<b>Jaffar</b>)</span></span>
-                <span id="p-val" style="color:var(--accent-gold)">31%</span>
-            </div>
-            <div class="progress-box"><div id="p-fill" class="fill" style="width: 31%;"><span class="avatar">🏎️</span></div></div>
-        </div>
-
-        <div class="row">
-            <div class="info">
-                <span class="team-label"><span class="team-divine-text">⚡ Team Divine</span> <span class="name-bracket">(<b>Manu</b>)</span></span>
-                <span id="d-val" style="color:var(--accent-blue)">16%</span>
-            </div>
-            <div class="progress-box"><div id="d-fill" class="fill" style="width: 16%;"><span class="avatar">🏍️</span></div></div>
-        </div>
-
-        <div class="row">
-            <div class="info">
-                <span class="team-label"><span class="team-mine-text">📊 Team Mine</span> <span class="name-bracket">(<b>Niveditha</b>)</span></span>
-                <span id="m-val" style="color:var(--accent-green)">8%</span>
-            </div>
-            <div class="progress-box"><div id="m-fill" class="fill" style="width: 8%;"><span class="avatar">🏃</span></div></div>
-        </div>
-
-        <div class="row">
-            <div class="info">
-                <span class="team-label"><span class="team-zoul-text">🚀 Team Zoul</span> <span class="name-bracket">(<b>Boregowda</b>)</span></span>
-                <span id="z-val" style="color:var(--accent-red)">4%</span>
-            </div>
-            <div class="progress-box"><div id="z-fill" class="fill" style="width: 4%;"><span class="avatar">🚶</span></div></div>
-        </div>
     </div>
 
     <h2 style="color: var(--accent-gold); text-transform: uppercase; letter-spacing: 2px; font-size: 1rem;">Individual Staff Report</h2>
     <div class="staff-grid" id="staff-container"></div>
 
     <div id="duel-overlay" onclick="closeDuel()">
-        <h1 style="color:var(--accent-gold); margin-bottom:40px;">PERFORMANCE DUEL</h1>
+        <h1 style="color:var(--accent-gold); margin-bottom:40px; letter-spacing: 10px;">PERFORMANCE DUEL</h1>
         <div class="duel-container" id="duel-content"></div>
-        <p style="margin-top:40px; color:#666;">Click anywhere to close</p>
+        <p style="margin-top:40px; color:#666;">Click anywhere to return to Dashboard</p>
     </div>
 
-    <div class="footer">CREATED BY SURAJ PRAKASH | PEENYA SHOWROOM ACCESS ONLY</div>
-    <div class="gear" onclick="unlock()">⚙️</div>
+    <div class="footer">PEENYA SHOWROOM ACCESS ONLY | v20.0 STABLE</div>
 
     <script>
         const MASTER_PASS = "suraj2026";
         let audioCtx;
         let duelSelection = [];
 
-        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-        
-        function playHover() {
-            if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.05);
-        }
+        // FULL DATA SET
+        const teamData = [
+            { id: 'p', name: "Team Precious", leader: "Jaffar", p: 31, color: '#fcc419', avatar: '🏎️' },
+            { id: 'd', name: "Team Divine", leader: "Manu", p: 16, color: '#4dabf7', avatar: '🏍️' },
+            { id: 'm', name: "Team Mine", leader: "Niveditha", p: 8, color: '#51cf66', avatar: '🏃' },
+            { id: 'z', name: "Team Zoul", leader: "Boregowda", p: 4, color: '#ff4d4d', avatar: '🚶' }
+        ];
 
         const staffData = [
             { n: "JAFFAR SIDDIK", t: "Precious", p: 31, l: true },
@@ -246,27 +219,97 @@
             { n: "BOREGOWDA", t: "Zoul", p: 4, l: true },
             { n: "LAKSHMI", t: "Precious", p: 111 },
             { n: "RAJESH", t: "Precious", p: 50 },
+            { n: "SHAMBHAVI B N", t: "Precious", p: 30 },
+            { n: "YASHWANTH", t: "Precious", p: 22 },
             { n: "MEGHANA", t: "Divine", p: 48 },
             { n: "SANDYA", t: "Divine", p: 36 },
             { n: "KALLAPPA", t: "Mine", p: 23 },
+            { n: "SAROJA", t: "Mine", p: 17 },
+            { n: "ASHIQ", t: "Mine", p: 11 },
             { n: "SACHIN K", t: "Zoul", p: 15 },
-            { n: "MAHESH", t: "Mine", p: 0 }
+            { n: "JABBAR", t: "Zoul", p: 14 },
+            { n: "ANDANI", t: "Zoul", p: 1 },
+            { n: "MAHESH", t: "Mine", p: 0 },
+            { n: "SHAMBHAVI", t: "Mine", p: 0 },
+            { n: "VINYA", t: "Divine", p: 0 },
+            { n: "NAVEEN", t: "Zoul", p: 0 }
         ];
+
+        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        
+        function playSound(freq, duration, type = 'sine') {
+            initAudio();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + duration);
+        }
+
+        function createRipple(e) {
+            const ripple = document.createElement("div");
+            ripple.className = "click-ripple";
+            ripple.style.left = `${e.clientX - 10}px`;
+            ripple.style.top = `${e.clientY - 10}px`;
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+            playSound(150, 0.1, 'triangle');
+        }
+
+        function renderDashboard() {
+            const race = document.getElementById('team-race');
+            const sortedTeams = [...teamData].sort((a,b) => b.p - a.p);
+            const bottomTeamId = sortedTeams[sortedTeams.length - 1].id;
+
+            teamData.forEach(t => {
+                const isBottom = t.id === bottomTeamId;
+                const row = document.createElement('div');
+                row.className = 'row';
+                row.innerHTML = `
+                    <div class="info">
+                        <span class="team-label">
+                            <span style="color:${t.color}">💎 ${t.name}</span> 
+                            <span class="name-bracket">(<b>${t.leader}</b>)</span>
+                            ${isBottom ? '<span class="no-growth-tag">⚠️ MOMENTUM REQD</span>' : ''}
+                        </span>
+                        <span style="color:${t.color}">${t.p}%</span>
+                    </div>
+                    <div class="progress-box">
+                        <div class="fill" style="width:${t.p}%; background:linear-gradient(90deg, ${t.color}, #fff)">
+                            <span class="avatar">${t.avatar}</span>
+                        </div>
+                    </div>
+                `;
+                race.appendChild(row);
+            });
+        }
 
         function renderStaff() {
             const container = document.getElementById('staff-container');
             container.innerHTML = "";
             staffData.sort((a,b) => (a.l === b.l) ? b.p - a.p : a.l ? -1 : 1);
 
-            staffData.forEach((s, index) => {
+            const minScore = Math.min(...staffData.map(s => s.p));
+
+            staffData.forEach((s) => {
                 const card = document.createElement('div');
-                card.className = `staff-card ${s.t} ${s.l ? 'leader-card' : ''} ${s.p === 111 ? 'top-leader' : ''} ${s.p === 0 ? 'no-growth-card' : ''}`;
-                card.onmouseover = playHover;
-                card.onclick = () => handleStaffClick(s);
+                const isNoGrowth = s.p === 0;
+                const isBottom = s.p === minScore && s.p > 0;
+                
+                let animClass = s.p >= 50 ? 'top-performer-anim' : '';
+                
+                card.className = `staff-card ${s.t} ${s.l ? 'leader-card' : ''} ${s.p >= 100 ? 'top-leader' : ''} ${isNoGrowth ? 'stagnant' : ''} ${isBottom ? 'bottom-performer' : ''}`;
+                
+                card.onclick = (e) => {
+                    e.stopPropagation();
+                    handleStaffClick(s, card);
+                };
 
                 card.innerHTML = `
-                    <span class="staff-name">${s.n} ${s.p > 100 ? '👑' : ''}</span>
-                    <span class="staff-team">${s.t} | ${s.p}%</span>
+                    <span class="staff-name ${animClass}">${s.n} ${s.p >= 100 ? '👑' : ''}</span>
+                    <span class="staff-team">${s.t} | ${s.p}% ${isNoGrowth ? '<span class="no-growth-tag">[NO GROWTH]</span>' : ''}</span>
                     <div style="background:#000; height:6px; border-radius:3px; margin-top:10px; overflow:hidden;">
                         <div style="background:var(--accent-blue); width:${Math.min(s.p,100)}%; height:100%;"></div>
                     </div>
@@ -275,30 +318,43 @@
             });
         }
 
-        function handleStaffClick(staff) {
-            if (staff.p === 111) {
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        function handleStaffClick(staff, el) {
+            playSound(440, 0.1);
+            
+            if (duelSelection.includes(staff)) {
+                duelSelection = duelSelection.filter(x => x !== staff);
+                el.style.border = "none";
+                return;
+            }
+
+            duelSelection.push(staff);
+            el.style.border = "2px solid var(--accent-blue)";
+
+            if (staff.p >= 100) {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                playSound(880, 0.3, 'square');
             }
             
-            duelSelection.push(staff);
             if (duelSelection.length === 2) {
-                showDuel();
+                setTimeout(showDuel, 300);
             }
         }
 
         function showDuel() {
             const [s1, s2] = duelSelection;
             const content = document.getElementById('duel-content');
+            playSound(600, 0.2, 'sawtooth');
+            
             content.innerHTML = `
-                <div class="duel-box" style="border-color:${s1.p >= s2.p ? 'var(--accent-green)' : '#333'}">
+                <div class="duel-box" style="border-color:${s1.p >= s2.p ? 'var(--accent-green)' : 'var(--accent-red)'}">
                     <h2 style="color:var(--accent-gold)">${s1.n}</h2>
-                    <h1 style="font-size:3rem">${s1.p}%</h1>
+                    <h1 style="font-size:4rem">${s1.p}%</h1>
                     <p>TEAM ${s1.t.toUpperCase()}</p>
                 </div>
                 <div class="vs-circle">VS</div>
-                <div class="duel-box" style="border-color:${s2.p >= s1.p ? 'var(--accent-green)' : '#333'}">
+                <div class="duel-box" style="border-color:${s2.p >= s1.p ? 'var(--accent-green)' : 'var(--accent-red)'}">
                     <h2 style="color:var(--accent-gold)">${s2.n}</h2>
-                    <h1 style="font-size:3rem">${s2.p}%</h1>
+                    <h1 style="font-size:4rem">${s2.p}%</h1>
                     <p>TEAM ${s2.t.toUpperCase()}</p>
                 </div>
             `;
@@ -308,10 +364,29 @@
         function closeDuel() {
             document.getElementById('duel-overlay').style.display = 'none';
             duelSelection = [];
+            document.querySelectorAll('.staff-card').forEach(c => c.style.border = "none");
         }
 
-        function unlock() { if(prompt("Pass:") === MASTER_PASS) alert("Admin Verified"); }
-        window.onload = renderStaff;
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleString();
+        }
+
+        window.onload = () => {
+            renderDashboard();
+            renderStaff();
+            setInterval(updateClock, 1000);
+            
+            // Populate Ticker
+            const ticker = document.getElementById('ticker-content');
+            const highlights = [
+                "🏆 TOP PERFORMER: LAKSHMI (111%)",
+                "🔥 TEAM PRECIOUS LEADING AT 31%",
+                "⚡ MEGHANA (DIVINE) SURGING AT 48%",
+                "📍 LOCATION: HESARAGHATTA SHOWROOM"
+            ];
+            ticker.innerHTML = highlights.map(h => `<div class="ticker-item">${h}</div>`).join('') + ticker.innerHTML;
+        };
     </script>
 </body>
 </html>
