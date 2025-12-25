@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGD Hesaraghatta | Neon Sales Dashboard v27.0</title>
+    <title>MGD Hesaraghatta | Neon Sales Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
@@ -12,7 +12,7 @@
             --neon-green: #39ff14;
             --neon-red: #ff073a;
             --bg-dark: #050510;
-            --card-bg: rgba(20, 20, 30, 0.85);
+            --card-bg: rgba(20, 20, 30, 0.8);
         }
 
         @font-face {
@@ -30,99 +30,172 @@
             color: white;
             font-family: 'Cyber', 'Segoe UI', Roboto, sans-serif;
             overflow-x: hidden;
-            padding-bottom: 80px;
         }
 
+        /* --- Typography & Headers --- */
         h1, h2, h3 { text-transform: uppercase; letter-spacing: 2px; margin: 0; text-align: center; }
         
         .main-title {
-            font-size: 3.5rem;
+            font-size: 3rem;
             color: var(--neon-blue);
-            text-shadow: 0 0 20px var(--neon-blue), 0 0 50px var(--neon-blue);
-            margin-bottom: 5px;
+            text-shadow: 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue);
+            margin-bottom: 10px;
         }
 
         .sub-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: var(--neon-gold);
             text-shadow: 0 0 10px var(--neon-gold);
             margin-bottom: 40px;
         }
 
+        /* --- Containers --- */
         .section-container {
             background: var(--card-bg);
             border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 20px var(--neon-blue);
+            box-shadow: 0 0 20px var(--neon-blue), inset 0 0 20px rgba(0, 243, 255, 0.2);
             border-radius: 20px;
             padding: 30px;
             margin-bottom: 40px;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(5px);
         }
 
         .section-header {
             font-size: 1.8rem;
+            color: white;
             margin-bottom: 30px;
             text-shadow: 0 0 10px white;
         }
 
-        /* --- Team Race --- */
+        /* --- Team Race (Top Section) --- */
         .team-race-row {
-            display: flex; align-items: center; margin-bottom: 25px; padding: 15px;
-            background: rgba(255,255,255,0.05); border-radius: 15px; transition: 0.3s;
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            border: 1px solid transparent;
+            transition: 0.3s;
         }
-        .race-track { height: 35px; background: rgba(0,0,0,0.5); border-radius: 18px; flex: 1; position: relative; border: 1px solid rgba(255,255,255,0.1); }
-        .race-bar { height: 100%; border-radius: 18px; transition: width 1.5s ease; position: relative; display: flex; align-items: center; justify-content: flex-end; }
-        .race-marker { font-size: 2.2rem; position: absolute; right: -12px; filter: drop-shadow(0 0 5px white); }
 
-        /* --- Staff Grid --- */
+        .team-info { flex: 1; }
+        .team-name { font-size: 1.3rem; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .team-icon { font-size: 1.5rem; }
+
+        .race-track {
+            height: 30px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 15px;
+            overflow: visible;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .race-bar {
+            height: 100%;
+            border-radius: 15px;
+            position: relative;
+            transition: width 1.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .race-marker {
+            font-size: 2rem;
+            position: absolute;
+            right: -10px;
+            filter: drop-shadow(0 0 5px white);
+        }
+
+        .trend-tag {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: 20px;
+            text-shadow: 0 0 5px currentColor;
+        }
+
+        .trend-up { color: var(--neon-green); border: 1px solid var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
+        .trend-steady { color: #aaa; border: 1px solid #aaa; }
+
+        /* --- Staff Report (Bottom Section) --- */
         .staff-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
         }
-        .staff-card {
-            background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s;
-        }
-        .staff-card:hover { transform: scale(1.02); background: rgba(255,255,255,0.08); }
-        .staff-name-large { font-size: 1.4rem; font-weight: bold; margin-bottom: 5px; }
 
-        /* --- Alerts --- */
+        .staff-card {
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .staff-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.07); }
+
+        .leader-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: var(--neon-gold);
+            border: 1px solid var(--neon-gold);
+            padding: 2px 8px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--neon-gold);
+        }
+
+        .staff-name-large { font-size: 1.4rem; font-weight: bold; margin-bottom: 5px; }
+        .staff-details { font-size: 0.9rem; opacity: 0.8; margin-bottom: 15px; display: flex; justify-content: space-between; }
+
+        /* --- Shared Styles --- */
         .critical {
             border-color: var(--neon-red) !important;
-            box-shadow: 0 0 20px var(--neon-red) !important;
-            animation: blink 1.5s infinite;
+            box-shadow: 0 0 20px var(--neon-red), inset 0 0 20px rgba(255, 7, 58, 0.2) !important;
+            animation: blink 1s infinite alternate;
         }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-        .danger-icon { color: var(--neon-red); margin-right: 8px; font-weight: bold; }
+        @keyframes blink { from { opacity: 1; } to { opacity: 0.6; } }
 
-        /* --- Neon Ticker (ENHANCED) --- */
-        .ticker-wrap {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: #000; border-top: 3px solid var(--neon-blue);
-            color: var(--neon-blue); overflow: hidden; padding: 12px 0; z-index: 2000;
-            box-shadow: 0 -10px 30px rgba(0, 243, 255, 0.5);
-        }
-        .ticker-move {
-            display: inline-block; white-space: nowrap; padding-left: 100%;
-            animation: ticker 30s linear infinite; font-size: 1.5rem; font-weight: bold;
-            text-shadow: 0 0 10px var(--neon-blue); letter-spacing: 2px;
-        }
-        @keyframes ticker { from { transform: translate(0, 0); } to { transform: translate(-100%, 0); } }
+        .danger-icon { color: var(--neon-red); margin-right: 10px; text-shadow: 0 0 10px var(--neon-red); }
 
         /* --- Admin --- */
-        .gear { position: fixed; bottom: 85px; right: 25px; font-size: 1.8rem; opacity: 0.1; cursor: pointer; z-index: 3000; transition: 0.3s; }
-        .gear:hover { opacity: 1; transform: rotate(90deg); }
-        #adminModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 4000; align-items: center; justify-content: center; }
-        .modal-content { background: var(--bg-dark); border: 2px solid var(--neon-gold); padding: 30px; border-radius: 20px; width: 85%; max-height: 80vh; overflow-y: auto; }
-        .input-box { display: flex; justify-content: space-between; margin-bottom: 10px; align-items: center; }
-        input { background: #111; border: 1px solid var(--neon-blue); color: white; padding: 6px; width: 80px; text-align: center; }
+        .settings-icon {
+            position: fixed; bottom: 20px; right: 20px;
+            font-size: 1.5rem; opacity: 0.2; cursor: pointer; transition: 0.5s;
+        }
+        .settings-icon:hover { opacity: 1; transform: rotate(90deg); }
 
-        /* --- Dynamic Colors --- */
-        .c-gold { color: var(--neon-gold); text-shadow: 0 0 5px var(--neon-gold); }
-        .c-blue { color: var(--neon-blue); text-shadow: 0 0 5px var(--neon-blue); }
-        .c-green { color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green); }
-        .c-red { color: var(--neon-red); text-shadow: 0 0 5px var(--neon-red); }
-        .bg-gold { background: var(--neon-gold); } .bg-blue { background: var(--neon-blue); } .bg-green { background: var(--neon-green); } .bg-red { background: var(--neon-red); }
+        #adminModal {
+            display: none; position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.9); z-index: 999; align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: var(--card-bg); border: 2px solid var(--neon-gold); box-shadow: 0 0 30px var(--neon-gold);
+            padding: 30px; border-radius: 20px; width: 80%; max-width: 600px; max-height: 80vh; overflow-y: auto;
+        }
+        .input-group { margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        input { background: #111; border: 1px solid var(--neon-blue); color: white; padding: 8px; border-radius: 5px; width: 100px; }
+        .save-btn { width: 100%; padding: 15px; background: var(--neon-green); border: none; font-weight: bold; font-family: 'Cyber'; font-size: 1.2rem; cursor: pointer; box-shadow: 0 0 20px var(--neon-green); }
+
+        /* --- Colors --- */
+        .c-gold { color: var(--neon-gold); text-shadow: 0 0 10px var(--neon-gold); }
+        .c-blue { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
+        .c-green { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
+        .c-red { color: var(--neon-red); text-shadow: 0 0 10px var(--neon-red); }
+        .bg-gold { background: var(--neon-gold); box-shadow: 0 0 15px var(--neon-gold); }
+        .bg-blue { background: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); }
+        .bg-green { background: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); }
+        .bg-red { background: var(--neon-red); box-shadow: 0 0 15px var(--neon-red); }
+        .b-gold { border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-gold); }
+        .b-blue { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); }
+        .b-green { border-color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); }
+        .b-red { border-color: var(--neon-red); box-shadow: 0 0 15px var(--neon-red); }
     </style>
 </head>
 <body>
@@ -132,145 +205,185 @@
 
     <div class="section-container">
         <h3 class="section-header">TEAM ACHIEVEMENT RACE</h3>
-        <div id="teamRaceCont"></div>
+        <div id="teamRaceContainer"></div>
     </div>
 
     <div class="section-container">
         <h3 class="section-header">INDIVIDUAL STAFF REPORT</h3>
-        <div id="staffGridCont" class="staff-grid"></div>
+        <div id="staffGridContainer" class="staff-grid"></div>
     </div>
 
-    <div class="ticker-wrap">
-        <div class="ticker-move" id="liveTicker">WELCOME COMMANDER SURAJ PRAKASH! STANDINGS UPDATED: TEAM PRECIOUS LEADING AT 31%!</div>
-    </div>
-
-    <div class="gear" onclick="openAdmin()">⚙️</div>
+    <div class="settings-icon" onclick="openAdmin()">⚙️</div>
     <div id="adminModal">
         <div class="modal-content">
-            <h2 class="c-gold">UPDATE SALES DATA</h2>
-            <div id="adminFields"></div>
-            <input type="text" id="in-ticker" placeholder="Update Broadcast" style="width:100%; margin:20px 0; padding:12px;">
-            <button onclick="saveData()" style="width:100%; padding:15px; background:var(--neon-green); border:none; font-weight:bold; cursor:pointer;">PUSH TO SHOWROOM SCREEN</button>
+            <h2 class="c-gold" style="margin-bottom:20px;">UPDATE SCORES</h2>
+            <div id="adminInputs"></div>
+            <button class="save-btn" onclick="saveData()">SYNC DATA</button>
         </div>
     </div>
 
     <script>
-        const clickSfx = () => {
-            const ctx = new AudioContext();
+        // --- CLICK SOUND ---
+        const playClick = () => {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
-            osc.frequency.setValueAtTime(900, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(1200, ctx.currentTime);
+            gain.gain.setValueAtTime(0.1, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
             osc.connect(gain); gain.connect(ctx.destination);
-            osc.start(); osc.stop(ctx.currentTime + 0.1);
+            osc.start(); osc.stop(ctx.currentTime + 0.15);
         };
 
-        let state = {
-            ticker: "MGD Hesaraghatta: Lakshmi leading at 111%! Team Precious at 31% Achievement! Keep Pushing!",
+        // --- DATA MODEL ---
+        let db = {
             teams: [
-                { id:'p', name:'(Jaffar Siddik) Team Precious', pct:31, c:'gold', i:'🏎️' },
-                { id:'d', name:'(Manu KR) Team Divine', pct:16, c:'blue', i:'🏍️' },
-                { id:'m', name:'(Niveditha S) Team Mine', pct:8, c:'green', i:'🏃' },
-                { id:'z', name:'(Boregowda) Team Zoul', pct:4, c:'red', i:'🚶', crit:true }
+                { id: 'p', name: 'Team Precious (Jaffar)', pct: 31, trend: '+10%', icon: '🏎️', color: 'gold' },
+                { id: 'd', name: 'Team Divine (Manu)', pct: 16, trend: '+6%', icon: '🏍️', color: 'blue' },
+                { id: 'm', name: 'Team Mine (Niveditha)', pct: 8, trend: 'STEADY', icon: '🏃', color: 'green' },
+                { id: 'z', name: 'Team Zoul (Boregowda)', pct: 4, trend: 'STEADY', icon: '🚶', color: 'red', critical: true }
             ],
             staff: [
-                { n:"LAKSHMI", t:"Precious", p:111, c:'gold', star:true },
-                { n:"RAJESH", t:"Precious", p:50, c:'gold' },
-                { n:"MEGHANA", t:"Divine", p:48, c:'blue' },
-                { n:"SANDYA", t:"Divine", p:36, c:'blue' },
-                { n:"SHAMBHAVI B N", t:"Precious", p:30, c:'gold' },
-                { n:"KALLAPPA", t:"Mine", p:23, c:'green' },
-                { n:"YASHWANTH", t:"Precious", p:22, c:'gold' },
-                { n:"SHAREEF", t:"Divine", p:17, c:'blue' },
-                { n:"SAROJA", t:"Mine", p:17, c:'green' },
-                { n:"SACHIN K", t:"Zoul", p:15, c:'red' },
-                { n:"JABBAR", t:"Zoul", p:14, c:'red' },
-                { n:"ASHIQ", t:"Mine", p:11, c:'green' },
-                { n:"CHETHAN", t:"Mine", p:10, c:'green' },
-                { n:"ZAMEER", t:"Precious", p:9, c:'gold' },
-                { n:"VINAYAK", t:"Divine", p:8, c:'blue' },
-                { n:"ANUSUYA", t:"Mine", p:4, c:'red', crit:true },
-                { n:"MADHU", t:"Mine", p:2, c:'red', crit:true },
-                { n:"ANDANI", t:"Zoul", p:1, c:'red', crit:true },
-                { n:"SHIVA KUMAR", t:"Precious", p:0, c:'red', crit:true },
-                { n:"SACHIN B", t:"Precious", p:0, c:'red', crit:true },
-                { n:"GAYATRI", t:"Precious", p:0, c:'red', crit:true },
-                { n:"KESHAV", t:"Precious", p:0, c:'red', crit:true },
-                { n:"SANJU", t:"Precious", p:0, c:'red', crit:true },
-                { n:"VIJETHA", t:"Divine", p:0, c:'red', crit:true },
-                { n:"SHYAMALA", t:"Divine", p:0, c:'red', crit:true },
-                { n:"SEEMA", t:"Divine", p:0, c:'red', crit:true },
-                { n:"SUDEEP", t:"Divine", p:0, c:'red', crit:true },
-                { n:"VINYA", t:"Divine", p:0, c:'red', crit:true },
-                { n:"MAHESH", t:"Mine", p:0, c:'red', crit:true },
-                { n:"AYAPPA", t:"Mine", p:0, c:'red', crit:true },
-                { n:"SHAMBHAVI", t:"Mine", p:0, c:'red', crit:true },
-                { n:"ASHIQ S", t:"Mine", p:0, c:'red', crit:true },
-                { n:"NAVEEN", t:"Zoul", p:0, c:'red', crit:true },
-                { n:"MUNEER", t:"Zoul", p:0, c:'red', crit:true },
-                { n:"ARUN", t:"Zoul", p:0, c:'red', crit:true },
-                { n:"THANUSH", t:"Zoul", p:0, c:'red', crit:true },
-                { n:"LOHIT", t:"Zoul", p:0, c:'red', crit:true },
-                { n:"PREETHI", t:"Zoul", p:0, c:'red', crit:true },
-                { n:"PRAVEEN", t:"Zoul", p:0, c:'red', crit:true }
+                // Leaders
+                { name: 'JAFFAR SIDDIK', team: 'Precious', pct: 31, leader: true, color: 'gold' },
+                { name: 'MANU KR', team: 'Divine', pct: 16, leader: true, color: 'blue' },
+                { name: 'NIVEDITHA S', team: 'Mine', pct: 8, leader: true, color: 'green' },
+                { name: 'BOREGOWDA', team: 'Zoul', pct: 4, leader: true, color: 'red', critical: true },
+                // Precious
+                { name: 'LAKSHMI', team: 'Precious', pct: 111, color: 'gold', top: true },
+                { name: 'RAJESH', team: 'Precious', pct: 50, color: 'gold' },
+                { name: 'SHAMBHAVI B N', team: 'Precious', pct: 30, color: 'gold' },
+                { name: 'YASHWANTH', team: 'Precious', pct: 22, color: 'gold' },
+                { name: 'ZAMEER', team: 'Precious', pct: 9, color: 'gold' },
+                { name: 'SHIVA KUMAR', team: 'Precious', pct: 0, color: 'gold', critical: true },
+                { name: 'SACHIN B', team: 'Precious', pct: 0, color: 'gold', critical: true },
+                { name: 'GAYATRI', team: 'Precious', pct: 0, color: 'gold', critical: true },
+                { name: 'KESHAV', team: 'Precious', pct: 0, color: 'gold', critical: true },
+                { name: 'SANJU', team: 'Precious', pct: 0, color: 'gold', critical: true },
+                // Divine
+                { name: 'MEGHANA', team: 'Divine', pct: 48, color: 'blue' },
+                { name: 'SANDYA', team: 'Divine', pct: 36, color: 'blue' },
+                { name: 'SHAREEF', team: 'Divine', pct: 17, color: 'blue' },
+                { name: 'VINAYAK', team: 'Divine', pct: 8, color: 'blue' },
+                { name: 'VIJETHA', team: 'Divine', pct: 0, color: 'blue', critical: true },
+                { name: 'SHYAMALA', team: 'Divine', pct: 0, color: 'blue', critical: true },
+                { name: 'SEEMA', team: 'Divine', pct: 0, color: 'blue', critical: true },
+                { name: 'VINYA', team: 'Divine', pct: 0, color: 'blue', critical: true },
+                // Mine
+                { name: 'KALLAPPA', team: 'Mine', pct: 23, color: 'green' },
+                { name: 'SAROJA', team: 'Mine', pct: 17, color: 'green' },
+                { name: 'ASHIQ', team: 'Mine', pct: 11, color: 'green' },
+                { name: 'CHETHAN', team: 'Mine', pct: 10, color: 'green' },
+                { name: 'ANUSUYA', team: 'Mine', pct: 4, color: 'green', critical: true },
+                { name: 'MADHU', team: 'Mine', pct: 2, color: 'green', critical: true },
+                { name: 'MAHESH', team: 'Mine', pct: 0, color: 'green', critical: true },
+                { name: 'SHAMBHAVI', team: 'Mine', pct: 0, color: 'green', critical: true },
+                { name: 'ASHIQ S', team: 'Mine', pct: 0, color: 'green', critical: true },
+                // Zoul
+                { name: 'SACHIN K', team: 'Zoul', pct: 15, color: 'red' },
+                { name: 'JABBAR', team: 'Zoul', pct: 14, color: 'red' },
+                { name: 'ANDANI', team: 'Zoul', pct: 1, color: 'red', critical: true },
+                { name: 'NAVEEN', team: 'Zoul', pct: 0, color: 'red', critical: true },
+                { name: 'MUNEER', team: 'Zoul', pct: 0, color: 'red', critical: true },
+                { name: 'ARUN', team: 'Zoul', pct: 0, color: 'red', critical: true },
+                { name: 'THANUSH', team: 'Zoul', pct: 0, color: 'red', critical: true },
+                { name: 'LOHIT', team: 'Zoul', pct: 0, color: 'red', critical: true },
+                { name: 'PREETHI', team: 'Zoul', pct: 0, color: 'red', critical: true },
+                { name: 'PRAVEEN', team: 'Zoul', pct: 0, color: 'red', critical: true }
             ]
         };
 
-        function render() {
-            document.getElementById('liveTicker').innerText = state.ticker;
-            const race = document.getElementById('teamRaceCont');
-            const grid = document.getElementById('staffGridCont');
-            race.innerHTML = ''; grid.innerHTML = '';
+        // --- RENDER FUNCTIONS ---
+        function renderDashboard() {
+            const raceCont = document.getElementById('teamRaceContainer');
+            const staffCont = document.getElementById('staffGridContainer');
+            raceCont.innerHTML = ''; staffCont.innerHTML = '';
 
-            state.teams.forEach(t => {
-                race.innerHTML += `
-                    <div class="team-race-row ${t.crit ? 'critical' : ''}" style="border-left: 5px solid var(--neon-${t.c})">
-                        <div style="flex:1;">
-                            <div class="c-${t.c}" style="font-weight:bold; margin-bottom:5px;">${t.crit ? '⚠️' : ''} ${t.name}</div>
-                            <div class="race-track"><div class="race-bar bg-${t.c}" style="width:${t.pct}%"><span class="race-marker">${t.i}</span></div></div>
+            // Render Teams
+            db.teams.forEach(t => {
+                const isCrit = t.critical ? 'critical' : '';
+                const trendClass = t.trend.includes('+') ? 'trend-up' : 'trend-steady';
+                raceCont.innerHTML += `
+                    <div class="team-race-row ${isCrit} b-${t.color}" onclick="playClick()">
+                        <div class="team-info">
+                            <div class="team-name c-${t.color}">
+                                ${t.critical ? '<span class="danger-icon">⚠️</span>' : ''}
+                                <span class="team-icon">${t.icon}</span> ${t.name}
+                            </div>
+                            <div class="race-track">
+                                <div class="race-bar bg-${t.color}" style="width:${t.pct}%">
+                                    <span class="race-marker">${t.icon}</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="c-${t.c}" style="font-size:2rem; font-weight:bold; margin-left:20px;">${t.pct}%</div>
+                        <div class="trend-tag ${trendClass}">${t.trend}</div>
+                        <div class="c-${t.color}" style="font-size:2rem; font-weight:bold; margin-left:20px;">${t.pct}%</div>
                     </div>
                 `;
             });
 
-            // Sort staff by achievement
-            state.staff.sort((a,b) => b.p - a.p).forEach(s => {
-                grid.innerHTML += `
-                    <div class="staff-card ${s.crit ? 'critical' : ''}" onclick="${s.star ? 'party()' : 'clickSfx()'}">
-                        <div class="staff-name-large c-${s.c}">${s.crit ? '⚠️' : ''}${s.n}</div>
-                        <div style="font-size:0.8rem; opacity:0.7;">TEAM ${s.t} | ${s.p}% ACHIEVED</div>
-                        <div class="race-track" style="height:10px; margin-top:8px;"><div class="race-bar bg-${s.c}" style="width:${Math.min(s.p, 100)}%"></div></div>
+            // Render Staff
+            db.staff.forEach((s, i) => {
+                const isCrit = s.critical ? 'critical' : '';
+                const borderClass = s.leader ? `b-${s.color}` : '';
+                const clickAction = s.top ? `celebrate(${i})` : 'playClick()';
+                staffCont.innerHTML += `
+                    <div class="staff-card ${isCrit} ${borderClass}" onclick="${clickAction}" id="staff-${i}">
+                        ${s.leader ? '<div class="leader-badge">👑 TEAM LEADER</div>' : ''}
+                        <div class="staff-name-large c-${s.color}">
+                            ${s.critical ? '<span class="danger-icon">⚠️</span>' : ''}${s.name}
+                        </div>
+                        <div class="staff-details">
+                            <span>TEAM ${s.team.toUpperCase()}</span>
+                            <span class="c-${s.color}" style="font-weight:bold;">${s.pct}% ACHIEVED</span>
+                        </div>
+                        <div class="race-track" style="height:15px;">
+                            <div class="race-bar bg-${s.color}" style="width:${Math.min(s.pct, 100)}%"></div>
+                        </div>
                     </div>
                 `;
             });
         }
 
-        function party() {
-            clickSfx();
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ffd700', '#00f3ff', '#39ff14'] });
+        function celebrate(idx) {
+            playClick();
+            const card = document.getElementById(`staff-${idx}`);
+            const rect = card.getBoundingClientRect();
+            const x = (rect.left + rect.width / 2) / window.innerWidth;
+            const y = (rect.top + rect.height / 2) / window.innerHeight;
+            confetti({ particleCount: 150, spread: 100, origin: { x, y }, colors: ['#ffd700', '#00f3ff', '#39ff14'] });
         }
 
+        // --- ADMIN FUNCTIONS ---
         function openAdmin() {
-            if(prompt("ACCESS CODE:") === "Suraj@2026") {
-                const fields = document.getElementById('adminFields');
-                fields.innerHTML = '<h4 class="c-blue">TEAM SCORES</h4>';
-                state.teams.forEach((t, i) => { fields.innerHTML += `<div class="input-box"><label>${t.name}</label><input type="number" id="t-${i}" value="${t.pct}"></div>`; });
-                fields.innerHTML += '<h4 class="c-blue">STAFF SCORES</h4>';
-                state.staff.forEach((s, i) => { fields.innerHTML += `<div class="input-box"><label>${s.n}</label><input type="number" id="s-${i}" value="${s.p}"></div>`; });
+            if(prompt("ENTER PASSWORD:") === "Suraj@2026") {
+                const inputs = document.getElementById('adminInputs');
+                inputs.innerHTML = '<h4 class="c-blue">TEAMS</h4>';
+                db.teams.forEach((t, i) => {
+                    inputs.innerHTML += `<div class="input-group"><label>${t.name}</label><input type="number" id="team-${i}" value="${t.pct}"></div>`;
+                });
+                inputs.innerHTML += '<h4 class="c-blue" style="margin-top:20px;">STAFF</h4>';
+                db.staff.forEach((s, i) => {
+                    inputs.innerHTML += `<div class="input-group"><label>${s.name}</label><input type="number" id="staff-in-${i}" value="${s.pct}"></div>`;
+                });
                 document.getElementById('adminModal').style.display = 'flex';
-            }
+            } else { alert("ACCESS DENIED"); }
         }
 
         function saveData() {
-            state.ticker = document.getElementById('in-ticker').value || state.ticker;
-            state.teams.forEach((t, i) => { t.pct = document.getElementById(`t-${i}`).value; });
-            state.staff.forEach((s, i) => { s.p = document.getElementById(`s-${i}`).value; s.crit = s.p < 5; });
-            render();
+            playClick();
+            db.teams.forEach((t, i) => { t.pct = document.getElementById(`team-${i}`).value; });
+            db.staff.forEach((s, i) => { 
+                s.pct = document.getElementById(`staff-in-${i}`).value;
+                s.critical = s.pct < 5 && !s.leader; // Auto-critical low performers
+            });
+            renderDashboard();
             document.getElementById('adminModal').style.display = 'none';
         }
 
-        window.onload = render;
+        // --- INIT ---
+        renderDashboard();
+        document.body.addEventListener('click', playClick, { once: true }); // Init audio context
     </script>
 </body>
 </html>
