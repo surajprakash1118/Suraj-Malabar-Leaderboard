@@ -1,24 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-      <link rel="manifest" href="manifest.json">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#050510">
-
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('MGD App Engine Online'))
-        .catch(err => console.log('Engine Offline', err));
-    });
-  }
-</script>
-      <head>
-   <meta charset="UTF-8">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGD Hesaraghatta | Suraj Prakash v34.0</title>
+    <title>MGD Hesaraghatta | Suraj Prakash v35.0</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#050510">
+
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    
     <style>
         :root {
             --neon-gold: #ffd700;
@@ -35,65 +28,56 @@
         }
 
         body {
-            margin: 0; padding: 10px; background-color: var(--bg-dark);
+            margin: 0; padding: 15px; background-color: var(--bg-dark);
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" opacity="0.15"><path d="M100 250 L100 100 L150 50 L200 100 L200 250 Z M400 250 L400 150 L450 120 L500 150 L500 250" stroke="cyan" fill="none" stroke-width="2"/></svg>');
             background-size: cover; background-attachment: fixed; color: white;
-            font-family: 'Cyber', 'Segoe UI', Roboto, sans-serif; overflow-x: hidden; padding-bottom: 100px;
+            font-family: 'Cyber', 'Segoe UI', Roboto, sans-serif; overflow-x: hidden; padding-bottom: 120px;
         }
 
-        /* --- ANIMATIONS --- */
         @keyframes rotateCrown { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
-        .crown { display: inline-block; animation: rotateCrown 4s linear infinite; font-size: 1.2rem; filter: drop-shadow(0 0 5px var(--neon-gold)); vertical-align: middle; }
+        .crown { display: inline-block; animation: rotateCrown 4s linear infinite; font-size: 1.2rem; filter: drop-shadow(0 0 8px var(--neon-gold)); vertical-align: middle; }
         
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
-        .rank-tag { display: inline-block; padding: 1px 5px; border-radius: 3px; font-size: 0.6rem; font-weight: bold; margin-left: 5px; animation: float 3s infinite ease-in-out; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+        .rank-tag { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; margin-left: 8px; animation: float 3s infinite ease-in-out; }
 
-        /* --- MOBILE TYPOGRAPHY SCALING --- */
         h1, h2, h3 { text-transform: uppercase; letter-spacing: 1px; margin: 0; text-align: center; }
-        .main-title { font-size: 1.6rem; color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); margin-bottom: 3px; }
-        .sub-title { font-size: 0.7rem; color: var(--neon-gold); text-shadow: 0 0 5px var(--neon-gold); margin-bottom: 20px; opacity: 0.8; }
+        .main-title { font-size: 1.8rem; color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); margin-bottom: 5px; }
+        .sub-title { font-size: 0.8rem; color: var(--neon-gold); text-shadow: 0 0 8px var(--neon-gold); margin-bottom: 25px; opacity: 0.8; }
 
         .section-container {
-            background: var(--card-bg); border: 1.2px solid var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue);
-            border-radius: 12px; padding: 15px; margin-bottom: 25px; backdrop-filter: blur(8px);
+            background: var(--card-bg); border: 1.5px solid var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue);
+            border-radius: 15px; padding: 18px; margin-bottom: 30px; backdrop-filter: blur(8px);
         }
 
-        .section-header { font-size: 1.1rem; margin-bottom: 15px; text-shadow: 0 0 5px white; }
+        .section-header { font-size: 1.2rem; margin-bottom: 15px; text-shadow: 0 0 8px white; }
+        .team-title-highlight { font-size: 1rem; font-weight: 900; }
+        .leader-name-bracket { font-size: 0.85rem; opacity: 0.8; }
 
-        /* HIGHLIGHTED TEAM & LEADER */
-        .team-title-highlight { font-size: 1.1rem; font-weight: 900; letter-spacing: 1px; }
-        .leader-name-bracket { font-size: 1rem; color: white; opacity: 0.9; }
+        .team-badge-highlight { font-weight: 900; padding: 3px 10px; border-radius: 4px; font-size: 0.65rem; margin-bottom: 8px; display: inline-block; }
 
-        .team-badge-highlight { font-weight: 900; padding: 2px 8px; border-radius: 3px; font-size: 0.6rem; letter-spacing: 1px; margin-bottom: 6px; display: inline-block; }
+        .team-race-row { display: flex; align-items: center; margin-bottom: 18px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 12px; }
+        .race-track { height: 26px; background: rgba(0,0,0,0.5); border-radius: 13px; flex: 1; position: relative; border: 1px solid rgba(255,255,255,0.1); }
+        .race-bar { height: 100%; border-radius: 13px; transition: width 1.5s ease; position: relative; display: flex; align-items: center; justify-content: flex-end; }
+        .race-marker { font-size: 1.6rem; position: absolute; right: -10px; filter: drop-shadow(0 0 5px white); }
 
-        /* RACE TRACK */
-        .team-race-row { display: flex; align-items: center; margin-bottom: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 10px; transition: 0.3s; }
-        .race-track { height: 24px; background: rgba(0,0,0,0.5); border-radius: 12px; flex: 1; position: relative; border: 1px solid rgba(255,255,255,0.1); }
-        .race-bar { height: 100%; border-radius: 12px; transition: width 1.5s ease; position: relative; display: flex; align-items: center; justify-content: flex-end; }
-        .race-marker { font-size: 1.5rem; position: absolute; right: -8px; filter: drop-shadow(0 0 5px white); }
+        .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        .staff-card { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; }
+        .staff-name-large { font-size: 1rem; font-weight: bold; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; }
+        .growth-box { font-size: 0.65rem; font-weight: bold; color: var(--neon-green); }
+        .staff-details { font-size: 0.75rem; opacity: 0.8; display: flex; justify-content: space-between; }
 
-        /* STAFF GRID */
-        .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-        .staff-card { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; }
-        .staff-card:hover { transform: scale(1.02); background: rgba(255,255,255,0.06); }
-        .staff-name-large { font-size: 0.95rem; font-weight: bold; margin-bottom: 3px; display: flex; align-items: center; justify-content: space-between; }
-        .growth-box { font-size: 0.6rem; font-weight: bold; color: var(--neon-green); text-shadow: 0 0 3px var(--neon-green); }
-        .staff-details { font-size: 0.7rem; opacity: 0.8; display: flex; justify-content: space-between; }
-
-        /* ALERTS */
-        .critical { border-color: var(--neon-red) !important; box-shadow: 0 0 10px var(--neon-red) !important; animation: blink 1.5s infinite; }
+        .critical { border-color: var(--neon-red) !important; box-shadow: 0 0 15px var(--neon-red) !important; animation: blink 1.5s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
 
-        /* TICKER */
-        .ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; border-top: 1.5px solid var(--neon-blue); color: var(--neon-blue); overflow: hidden; padding: 8px 0; z-index: 5000; }
-        .ticker-move { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 30s linear infinite; font-size: 0.9rem; font-weight: bold; }
+        .ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; border-top: 2px solid var(--neon-blue); color: var(--neon-blue); overflow: hidden; padding: 10px 0; z-index: 5000; }
+        .ticker-move { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 35s linear infinite; font-size: 1rem; font-weight: bold; }
         @keyframes ticker { from { transform: translate(0, 0); } to { transform: translate(-100%, 0); } }
 
-        .gear { position: fixed; bottom: 60px; right: 15px; font-size: 1.3rem; opacity: 0.15; cursor: pointer; z-index: 6000; }
+        .gear { position: fixed; bottom: 70px; right: 20px; font-size: 1.5rem; opacity: 0.15; cursor: pointer; z-index: 6000; }
         #adminModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 7000; align-items: center; justify-content: center; }
-        .modal-content { background: var(--bg-dark); border: 2px solid var(--neon-gold); padding: 20px; border-radius: 12px; width: 90%; max-height: 80vh; overflow-y: auto; }
-        .input-box { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center; font-size: 0.85rem; }
-        input { background: #111; border: 1px solid var(--neon-blue); color: white; padding: 5px; width: 55px; text-align: center; }
+        .modal-content { background: var(--bg-dark); border: 2px solid var(--neon-gold); padding: 25px; border-radius: 15px; width: 90%; max-height: 80vh; overflow-y: auto; }
+        .input-box { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center; }
+        input { background: #111; border: 1px solid var(--neon-blue); color: white; padding: 6px; width: 60px; text-align: center; }
 
         .c-gold { color: var(--neon-gold); } .c-blue { color: var(--neon-blue); } .c-green { color: var(--neon-green); } .c-red { color: var(--neon-red); }
         .bg-gold { background: var(--neon-gold); } .bg-blue { background: var(--neon-blue); } .bg-green { background: var(--neon-green); } .bg-red { background: var(--neon-red); }
@@ -114,22 +98,24 @@
         <div id="staffGridCont" class="staff-grid"></div>
     </div>
 
+    <div id="lastSyncStamp" style="text-align: center; color: var(--neon-blue); font-size: 0.6rem; margin-top: 15px; opacity: 0.7; letter-spacing: 1px; text-shadow: 0 0 5px var(--neon-blue);">
+        LAST REFRESH: WAITING FOR SYNC...
+    </div>
+
     <div class="ticker-wrap">
-        <div class="ticker-move" id="liveTicker">WELCOME COMMANDER SURAJ PRAKASH! STANDINGS UPDATED: TEAM PRECIOUS LEADING AT 31%</div>
+        <div class="ticker-move" id="liveTicker">LOADING COMMANDER SURAJ'S BROADCAST...</div>
     </div>
 
     <div class="gear" onclick="openAdmin()">⚙️</div>
     <div id="adminModal">
         <div class="modal-content">
-            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">UPDATE SALES DATA v34.0</h2>
+            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v35.0</h2>
             <div id="adminFields"></div>
-            <input type="text" id="in-ticker" placeholder="Update Broadcast" style="width:100%; margin:12px 0; padding:8px; font-size: 0.75rem;">
-            <button onclick="saveData()" style="width:100%; padding:10px; background:var(--neon-green); border:none; font-weight:bold; cursor:pointer;">PUSH TO SHOWROOM SCREEN</button>
+            <input type="text" id="in-ticker" placeholder="Update Broadcast" style="width:100%; margin:15px 0; padding:10px; font-size: 0.8rem;">
+            <button onclick="saveData()" style="width:100%; padding:12px; background:var(--neon-green); border:none; font-weight:bold; cursor:pointer; color:black;">PUSH UPDATES</button>
         </div>
     </div>
-<div id="lastSyncStamp" style="text-align: center; color: var(--neon-blue); font-size: 0.6rem; margin-top: 15px; opacity: 0.7; letter-spacing: 1px; text-shadow: 0 0 5px var(--neon-blue);">
-    LAST REFRESH: WAITING FOR SYNC...
-</div>
+
     <script>
         const clickSfx = () => {
             const ctx = new AudioContext(); const osc = ctx.createOscillator(); const gain = ctx.createGain();
@@ -142,8 +128,8 @@
         const rankingIcons = ['🏎️', '🏍️', '🏃', '🚶'];
 
         let state = {
-            ticker: "MGD Hesaraghatta: Team Precious 🏎️ leading at 31%! Team Divine 🏍️ at 16%! Team Mine 🏃 at 8%! Team Zoul 🚶 at 4%!",
-              lastUpdated: "",
+            ticker: "COMMANDER SURAJ PRAKASH PRESENTS: Team Precious 🏎️ leading at 31% | Team Divine 🏍️ at 16% | Team Mine 🏃 at 8% | Team Zoul 🚶 at 4% | LAKSHMI Star Performer at 111% | Managed by Suraj Prakash",
+            lastUpdated: "",
             teams: [
                 { id:'p', name:'Precious', leader:'Jaffar Siddik', pct:31, c:'gold', lastPct: 21 },
                 { id:'d', name:'Divine', leader:'Manu KR', pct:16, c:'blue', lastPct: 10 },
@@ -151,7 +137,7 @@
                 { id:'z', name:'Zoul', leader:'Boregowda', pct:4, c:'red', lastPct: 4, crit:true }
             ],
             staff: [
-                { n:"LAKSHMI", t:"Precious", p:111, c:'gold', crown:true, lastP: 111, lastRank: 1 },
+                { n:"LAKSHMI", t:"Precious", p:111, c:'gold', lastP: 111, lastRank: 1 },
                 { n:"RAJESH", t:"Precious", p:50, c:'gold', lastP: 9, lastRank: 15 },
                 { n:"MEGHANA", t:"Divine", p:48, c:'blue', lastP: 48, lastRank: 2 },
                 { n:"SANDYA", t:"Divine", p:36, c:'blue', lastP: 12, lastRank: 10 },
@@ -169,7 +155,7 @@
                 { n:"ANUSUYA", t:"Mine", p:4, c:'red', lastP: 4, lastRank: 16 },
                 { n:"MADHU", t:"Mine", p:2, c:'red', lastP: 2, lastRank: 17 },
                 { n:"ANDANI", t:"Zoul", p:1, c:'red', lastP: 1, lastRank: 18 },
-                { n:"SHIVA KUMAR", nFull:"SHIVA KUMAR", t:"Precious", p:0, c:'red', lastP: 0, lastRank: 19 },
+                { n:"SHIVA KUMAR", t:"Precious", p:0, c:'red', lastP: 0, lastRank: 19 },
                 { n:"SACHIN B", t:"Precious", p:0, c:'red', lastP: 0, lastRank: 20 },
                 { n:"GAYATRI", t:"Precious", p:0, c:'red', lastP: 0, lastRank: 21 },
                 { n:"KESHAV", t:"Precious", p:0, c:'red', lastP: 0, lastRank: 22 },
@@ -194,61 +180,53 @@
         };
 
         function render() {
-              // Ensure timestamp shows up on every refresh
-if (state.lastUpdated) {
-    document.getElementById('lastSyncStamp').innerText = "LAST UPDATED: " + state.lastUpdated;
-}
             document.getElementById('liveTicker').innerText = state.ticker;
+            if (state.lastUpdated) {
+                document.getElementById('lastSyncStamp').innerText = "LAST UPDATED: " + state.lastUpdated;
+            }
+            
             const race = document.getElementById('teamRaceCont');
             const grid = document.getElementById('staffGridCont');
             race.innerHTML = ''; grid.innerHTML = '';
 
-            // Sort Teams by PCT and assign rank-based icons
-            state.teams.sort((a,b) => b.pct - a.pct).forEach((t, rankIdx) => {
+            state.teams.sort((a,b) => b.pct - a.pct).forEach((t, idx) => {
                 const growth = t.pct - t.lastPct;
-                const growthTxt = growth > 0 ? `+${growth}%` : growth < 0 ? `${growth}%` : 'STEADY';
-                const rankIcon = rankingIcons[rankIdx] || '🚶';
-                const isLeader = rankIdx === 0;
-
+                const icon = rankingIcons[idx] || '🚶';
                 race.innerHTML += `
                     <div class="team-race-row ${t.crit ? 'critical' : ''}" style="border-left: 4px solid var(--neon-${t.c})">
                         <div style="flex:1;">
                             <div class="c-${t.c}" style="margin-bottom:5px; display:flex; align-items:center;">
-                                ${isLeader ? '<span class="crown">👑</span>' : ''} 
+                                ${idx === 0 ? '<span class="crown">👑</span>' : ''} 
                                 <span class="team-title-highlight">${t.name.toUpperCase()}</span>
                                 <span class="leader-name-bracket">&nbsp;(${t.leader})</span>
-                                <span style="font-size:0.55rem; margin-left:8px; opacity:0.7;">${growthTxt}</span>
+                                <span style="font-size:0.55rem; margin-left:10px; opacity:0.7;">${growth > 0 ? '+' : ''}${growth}%</span>
                             </div>
-                            <div class="race-track"><div class="race-bar bg-${t.c}" style="width:${t.pct}%"><span class="race-marker">${rankIcon}</span></div></div>
+                            <div class="race-track"><div class="race-bar bg-${t.c}" style="width:${t.pct}%"><span class="race-marker">${icon}</span></div></div>
                         </div>
                         <div class="c-${t.c}" style="font-size:1.4rem; font-weight:bold; margin-left:12px;">${t.pct}%</div>
-                    </div>
-                `;
+                    </div>`;
             });
 
-            state.staff.sort((a,b) => b.p - a.p);
-            state.staff.forEach((s, i) => {
-                const currentRank = i + 1;
-                const rankChange = s.lastRank - currentRank;
-                const rankIcon = rankChange > 0 ? `⬆️ #${currentRank}` : rankChange < 0 ? `⬇️ #${currentRank}` : `• #${currentRank}`;
-                const rankColor = rankChange > 0 ? 'var(--neon-green)' : rankChange < 0 ? 'var(--neon-red)' : '#aaa';
+            state.staff.sort((a,b) => b.p - a.p).forEach((s, i) => {
+                const curRank = i + 1;
+                const rankChg = s.lastRank - curRank;
+                const rIcon = rankChg > 0 ? `⬆️ #${curRank}` : rankChg < 0 ? `⬇️ #${curRank}` : `• #${curRank}`;
+                const rCol = rankChg > 0 ? 'var(--neon-green)' : rankChg < 0 ? 'var(--neon-red)' : '#aaa';
                 const growth = s.p - s.lastP;
-                const isCrit = s.p < 5;
-
+                
                 grid.innerHTML += `
-                    <div class="staff-card ${isCrit ? 'critical' : ''}" onclick="${s.p >= 100 ? 'party()' : 'clickSfx()'}">
+                    <div class="staff-card ${s.p < 5 ? 'critical' : ''}" onclick="${s.p >= 100 ? 'party()' : 'clickSfx()'}">
                         <div class="team-badge-highlight bg-${s.c}">${s.t.toUpperCase()}</div>
                         <div class="staff-name-large c-${s.c}">
                             <span>${s.p >= 100 ? '<span class="crown">👑</span>' : ''}${s.n}</span>
-                            <span class="rank-tag" style="background:${rankColor}; color:black;">${rankIcon}</span>
+                            <span class="rank-tag" style="background:${rCol}; color:black;">${rIcon}</span>
                         </div>
                         <div class="staff-details">
-                            <span class="growth-box">${growth > 0 ? '+' + growth : growth}% GROWTH</span>
+                            <span class="growth-box">${growth > 0 ? '+' : ''}${growth}% GROWTH</span>
                             <span style="font-weight:bold;">${s.p}% ACHIEVED</span>
                         </div>
-                        <div class="race-track" style="height:6px; margin-top:5px;"><div class="race-bar bg-${s.c}" style="width:${Math.min(s.p, 100)}%"></div></div>
-                    </div>
-                `;
+                        <div class="race-track" style="height:6px; margin-top:6px;"><div class="race-bar bg-${s.c}" style="width:${Math.min(s.p, 100)}%"></div></div>
+                    </div>`;
             });
         }
 
@@ -271,24 +249,24 @@ if (state.lastUpdated) {
                 s.lastRank = state.staff.indexOf(s) + 1;
                 s.lastP = s.p;
                 s.p = parseInt(document.getElementById(`s-${i}`).value);
-                s.crit = s.p < 5;
             });
             state.ticker = document.getElementById('in-ticker').value || state.ticker;
-              // Capture the current moment in IST format
-const now = new Date();
-state.lastUpdated = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) + ", " + 
-                  now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+            
+            const now = new Date();
+            state.lastUpdated = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) + ", " + 
+                              now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
 
-// Update the text on the screen immediately
-document.getElementById('lastSyncStamp').innerText = "LAST UPDATED: " + state.lastUpdated;
-            render(); document.getElementById('adminModal').style.display = 'none';
+            render(); 
+            document.getElementById('adminModal').style.display = 'none';
+        }
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(reg => console.log('MGD Online'));
+            });
         }
 
         window.onload = render;
     </script>
 </body>
 </html>
-
-
-
-
