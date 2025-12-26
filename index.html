@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGD Hesaraghatta | Suraj Prakash v35.3</title>
+    <title>MGD Hesaraghatta | Suraj Prakash v35.4</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -62,14 +62,15 @@
             text-shadow: 0 0 5px rgba(255,255,255,0.8); 
         }
 
-        /* V35.3 GROWTH FONT - LARGER & BRIGHTER */
+        /* DYNAMIC GROWTH STYLING */
         .team-growth-highlight {
             font-size: 0.85rem;
             font-weight: 900;
-            color: var(--neon-green);
-            text-shadow: 0 0 8px var(--neon-green);
             margin-left: 12px;
         }
+
+        .growth-pos { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
+        .growth-neg { color: var(--neon-red); text-shadow: 0 0 8px var(--neon-red); }
 
         .team-badge-highlight { font-weight: 900; padding: 2px 8px; border-radius: 3px; font-size: 0.6rem; letter-spacing: 1px; margin-bottom: 6px; display: inline-block; }
 
@@ -81,7 +82,7 @@
         .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
         .staff-card { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; }
         .staff-name-large { font-size: 0.9rem; font-weight: bold; margin-bottom: 3px; display: flex; align-items: center; justify-content: space-between; }
-        .growth-box { font-size: 0.65rem; font-weight: bold; color: var(--neon-green); }
+        .growth-box { font-size: 0.65rem; font-weight: bold; }
         .staff-details { font-size: 0.7rem; opacity: 0.8; display: flex; justify-content: space-between; }
 
         .critical { border-color: var(--neon-red) !important; box-shadow: 0 0 10px var(--neon-red) !important; animation: blink 1.5s infinite; }
@@ -128,9 +129,9 @@
     <div id="adminModal">
         <div class="modal-content">
             <div style="font-size: 0.55rem; color: #555; margin-bottom: 10px; text-align: right;">
-                System: PWA-CORE | Build: v35.3 | Status: <span class="c-green">ONLINE</span>
+                System: PWA-CORE | Build: v35.4 | Status: <span class="c-green">ONLINE</span>
             </div>
-            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v35.3</h2>
+            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v35.4</h2>
             <div id="adminFields"></div>
             <input type="text" id="in-ticker" placeholder="Update Broadcast" style="width:100%; margin:12px 0; padding:10px; font-size: 0.75rem;">
             <button onclick="saveData()" style="width:100%; padding:12px; background:var(--neon-green); border:none; font-weight:bold; cursor:pointer; color:black;">PUSH UPDATES</button>
@@ -213,6 +214,9 @@
             state.teams.sort((a,b) => b.pct - a.pct).forEach((t, idx) => {
                 const growth = t.pct - t.lastPct;
                 const icon = rankingIcons[idx] || '🚶';
+                // Dynamic Color Check
+                const growthClass = growth > 0 ? 'growth-pos' : 'growth-neg';
+                
                 race.innerHTML += `
                     <div class="team-race-row ${t.crit ? 'critical' : ''}" style="border-left: 4px solid var(--neon-${t.c})">
                         <div style="flex:1;">
@@ -220,7 +224,7 @@
                                 ${idx === 0 ? '<span class="crown">👑</span>' : ''} 
                                 <span class="team-title-highlight">${t.name.toUpperCase()}</span>
                                 <span class="leader-name-bracket">&nbsp;(${t.leader})</span>
-                                <span class="team-growth-highlight">${growth > 0 ? '+' : ''}${growth}%</span>
+                                <span class="team-growth-highlight ${growthClass}">${growth > 0 ? '+' : ''}${growth}%</span>
                             </div>
                             <div class="race-track"><div class="race-bar bg-${t.c}" style="width:${t.pct}%"><span class="race-marker">${icon}</span></div></div>
                         </div>
@@ -234,6 +238,7 @@
                 const rIcon = rankChg > 0 ? `⬆️ #${curRank}` : rankChg < 0 ? `⬇️ #${curRank}` : `• #${curRank}`;
                 const rCol = rankChg > 0 ? 'var(--neon-green)' : rankChg < 0 ? 'var(--neon-red)' : '#aaa';
                 const growth = s.p - s.lastP;
+                const sGrowthClass = growth > 0 ? 'c-green' : 'c-red';
                 
                 grid.innerHTML += `
                     <div class="staff-card ${s.p < 5 ? 'critical' : ''}" onclick="${s.p >= 100 ? 'party()' : 'clickSfx()'}">
@@ -243,7 +248,7 @@
                             <span class="rank-tag" style="background:${rCol}; color:black;">${rIcon}</span>
                         </div>
                         <div class="staff-details">
-                            <span class="growth-box">${growth > 0 ? '+' : ''}${growth}% GROWTH</span>
+                            <span class="growth-box ${sGrowthClass}">${growth > 0 ? '+' : ''}${growth}% GROWTH</span>
                             <span style="font-weight:bold;">${s.p}% ACHIEVED</span>
                         </div>
                         <div class="race-track" style="height:6px; margin-top:6px;"><div class="race-bar bg-${s.c}" style="width:${Math.min(s.p, 100)}%"></div></div>
@@ -252,7 +257,7 @@
         }
 
         function checkVersion() {
-            alert("MGD Leaderboard\nVersion: 35.3\nCommander: Suraj Prakash\nStatus: Live Sync Active");
+            alert("MGD Leaderboard\nVersion: 35.4\nCommander: Suraj Prakash\nStatus: Live Sync Active");
         }
 
         function party() { clickSfx(); confetti({ particleCount: 150, spread: 60, origin: { y: 0.6 } }); }
