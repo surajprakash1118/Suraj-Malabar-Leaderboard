@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGD Hesaraghatta | Suraj Prakash v35.4</title>
+    <title>MGD Hesaraghatta | Suraj Prakash v37.0</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -51,7 +51,6 @@
         }
 
         .section-header { font-size: 1.1rem; margin-bottom: 15px; text-shadow: 0 0 5px white; }
-        
         .team-title-highlight { font-size: 0.95rem; font-weight: 900; letter-spacing: 1px; }
         
         .leader-name-bracket { 
@@ -62,13 +61,7 @@
             text-shadow: 0 0 5px rgba(255,255,255,0.8); 
         }
 
-        /* DYNAMIC GROWTH STYLING */
-        .team-growth-highlight {
-            font-size: 0.85rem;
-            font-weight: 900;
-            margin-left: 12px;
-        }
-
+        .team-growth-highlight { font-size: 0.85rem; font-weight: 900; margin-left: 12px; }
         .growth-pos { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
         .growth-neg { color: var(--neon-red); text-shadow: 0 0 8px var(--neon-red); }
 
@@ -89,7 +82,8 @@
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
 
         .ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; border-top: 1.5px solid var(--neon-blue); color: var(--neon-blue); overflow: hidden; padding: 8px 0; z-index: 5000; }
-        .ticker-move { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 35s linear infinite; font-size: 0.85rem; font-weight: bold; }
+        /* v37.0 SPEED INCREASE: Changed 35s to 25s */
+        .ticker-move { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 25s linear infinite; font-size: 0.85rem; font-weight: bold; }
         @keyframes ticker { from { transform: translate(0, 0); } to { transform: translate(-100%, 0); } }
 
         .gear { position: fixed; bottom: 60px; right: 15px; font-size: 1.3rem; opacity: 0.15; cursor: pointer; z-index: 6000; }
@@ -129,9 +123,9 @@
     <div id="adminModal">
         <div class="modal-content">
             <div style="font-size: 0.55rem; color: #555; margin-bottom: 10px; text-align: right;">
-                System: PWA-CORE | Build: v35.4 | Status: <span class="c-green">ONLINE</span>
+                System: PWA-CORE | Build: v37.0 | Status: <span class="c-green">ONLINE</span>
             </div>
-            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v35.4</h2>
+            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v37.0</h2>
             <div id="adminFields"></div>
             <input type="text" id="in-ticker" placeholder="Update Broadcast" style="width:100%; margin:12px 0; padding:10px; font-size: 0.75rem;">
             <button onclick="saveData()" style="width:100%; padding:12px; background:var(--neon-green); border:none; font-weight:bold; cursor:pointer; color:black;">PUSH UPDATES</button>
@@ -150,7 +144,8 @@
         const rankingIcons = ['🏎️', '🏍️', '🏃', '🚶'];
 
         let state = {
-            ticker: "Team Precious 🏎️ leading at 31% | Team Divine 🏍️ at 16% | Team Mine 🏃 at 8% | Team Zoul 🚶 at 4% | LAKSHMI Star Performer at 111% | managed by Suraj Prakash, V35.1",
+            // UPDATED TICKER VERSION BRANDING
+            ticker: "Team Precious 🏎️ leading at 31% | Team Divine 🏍️ at 16% | Team Mine 🏃 at 8% | Team Zoul 🚶 at 4% | LAKSHMI Star Performer at 111% | managed by Suraj Prakash, V37.0",
             lastUpdated: "",
             teams: [
                 { id:'p', name:'Precious', leader:'Jaffar Siddik', pct:31, c:'gold', lastPct: 21 },
@@ -206,17 +201,13 @@
             if (state.lastUpdated) {
                 document.getElementById('lastSyncStamp').innerText = "LAST UPDATED: " + state.lastUpdated;
             }
-            
             const race = document.getElementById('teamRaceCont');
             const grid = document.getElementById('staffGridCont');
             race.innerHTML = ''; grid.innerHTML = '';
-
             state.teams.sort((a,b) => b.pct - a.pct).forEach((t, idx) => {
                 const growth = t.pct - t.lastPct;
                 const icon = rankingIcons[idx] || '🚶';
-                // Dynamic Color Check
                 const growthClass = growth > 0 ? 'growth-pos' : 'growth-neg';
-                
                 race.innerHTML += `
                     <div class="team-race-row ${t.crit ? 'critical' : ''}" style="border-left: 4px solid var(--neon-${t.c})">
                         <div style="flex:1;">
@@ -231,7 +222,6 @@
                         <div class="c-${t.c}" style="font-size:1.3rem; font-weight:bold; margin-left:12px;">${t.pct}%</div>
                     </div>`;
             });
-
             state.staff.sort((a,b) => b.p - a.p).forEach((s, i) => {
                 const curRank = i + 1;
                 const rankChg = s.lastRank - curRank;
@@ -239,7 +229,6 @@
                 const rCol = rankChg > 0 ? 'var(--neon-green)' : rankChg < 0 ? 'var(--neon-red)' : '#aaa';
                 const growth = s.p - s.lastP;
                 const sGrowthClass = growth > 0 ? 'c-green' : 'c-red';
-                
                 grid.innerHTML += `
                     <div class="staff-card ${s.p < 5 ? 'critical' : ''}" onclick="${s.p >= 100 ? 'party()' : 'clickSfx()'}">
                         <div class="team-badge-highlight bg-${s.c}">${s.t.toUpperCase()}</div>
@@ -257,12 +246,13 @@
         }
 
         function checkVersion() {
-            alert("MGD Leaderboard\nVersion: 35.4\nCommander: Suraj Prakash\nStatus: Live Sync Active");
+            alert("MGD Leaderboard\nVersion: 37.0\nCommander: Suraj Prakash\nStatus: Live Sync Active");
         }
 
         function party() { clickSfx(); confetti({ particleCount: 150, spread: 60, origin: { y: 0.6 } }); }
 
         function openAdmin() {
+            // PASSWORD GATE: Replace "Suraj@2026" with your new secret password
             if(prompt("ACCESS CODE:") === "Suraj@2026") {
                 const fields = document.getElementById('adminFields');
                 fields.innerHTML = '<h4 class="c-blue" style="font-size:0.7rem">TEAM SCORES</h4>';
@@ -281,11 +271,9 @@
                 s.p = parseInt(document.getElementById(`s-${i}`).value);
             });
             state.ticker = document.getElementById('in-ticker').value || state.ticker;
-            
             const now = new Date();
             state.lastUpdated = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) + ", " + 
                               now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
-
             render(); 
             document.getElementById('adminModal').style.display = 'none';
         }
@@ -295,7 +283,6 @@
                 navigator.serviceWorker.register('sw.js').then(reg => console.log('MGD Online'));
             });
         }
-
         window.onload = render;
     </script>
 </body>
