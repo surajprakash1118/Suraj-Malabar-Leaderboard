@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGD Hesaraghatta v38.6</title>
+    <title>MGD Hesaraghatta v38.8</title>
     <style>
         :root {
             --bg-black: #050505;
             --card-bg: #121317;
-            --precious: #ff8c00; /* Neon Orange */
-            --divine: #ffff00;   /* Neon Yellow */
-            --mine: #bf00ff;     /* Neon Purple */
-            --zoul: #00e5ff;     /* Neon Cyan */
+            --precious: #ff8c00; 
+            --divine: #ffff00;   
+            --mine: #bf00ff;     
+            --zoul: #00e5ff;     
             --neon-red-glow: #ff0000;
             --neon-green-growth: #39ff14;
         }
@@ -25,7 +25,17 @@
             text-transform: uppercase;
         }
 
-        /* MASTER NEON BAR GLOW */
+        /* DEBUG STATUS BAR */
+        #debug-bar {
+            background: #222;
+            color: #ffea00;
+            font-size: 10px;
+            padding: 5px;
+            text-align: center;
+            border-bottom: 1px solid #444;
+            margin-bottom: 15px;
+        }
+
         .neon-bar-glow { box-shadow: 0 0 18px currentColor; }
         .critical-glow-red { border: 2px solid var(--neon-red-glow) !important; box-shadow: 0 0 25px var(--neon-red-glow) !important; }
         
@@ -80,6 +90,8 @@
 </head>
 <body>
 
+    <div id="debug-bar">Initializing Engine...</div>
+
     <div class="header">
         <h1 class="main-title">MGD HESARAGHATTA</h1>
         <div class="sub-title">MANAGED BY SURAJ PRAKASH</div>
@@ -97,7 +109,7 @@
     </div>
 
     <div class="ticker">
-        <div class="ticker-move" id="ticker-text">SYNCHRONIZING MGD HUB v38.6...</div>
+        <div class="ticker-move" id="ticker-text">SYNCHRONIZING MGD HUB v38.8...</div>
     </div>
 
     <script>
@@ -115,14 +127,19 @@
         async function updateDashboard() {
             try {
                 const response = await fetch(SHEET_CSV_URL);
-                const data = await response.text();
-                const rows = data.split('\n').slice(1);
+                const csvText = await response.text();
+                const rows = csvText.split('\n').slice(1);
                 
                 let teams = [];
                 let staff = [];
+                let debugInfo = { totalRows: rows.length, colCount: 0, validRanks: 0 };
 
                 rows.forEach(row => {
                     const cols = row.split(',');
+                    debugInfo.colCount = cols.length;
+                    
+                    if(cols.length < 4) return;
+                    
                     const entry = {
                         type: cols[0]?.trim().toLowerCase(),
                         name: cols[1]?.trim(),
@@ -130,11 +147,18 @@
                         curr: parseFloat(cols[3]) || 0,
                         prev: parseFloat(cols[4]) || 0,
                         icon: cols[5]?.trim() || '🏎️',
-                        lastRank: parseInt(cols[6]) || 0 // Maps to Column G
+                        lastRank: cols[6] ? parseInt(cols[6].trim()) : null
                     };
+
+                    if(!isNaN(entry.lastRank)) debugInfo.validRanks++;
+
                     if(entry.type === 'team') teams.push(entry);
                     else if(entry.type === 'staff') staff.push(entry);
                 });
+
+                // Update Debug Bar
+                document.getElementById('debug-bar').innerText = 
+                    `DEBUG: CSV Rows: ${debugInfo.totalRows} | Columns: ${debugInfo.colCount} | Staff: ${staff.length} | Valid LastRanks: ${debugInfo.validRanks}`;
 
                 const lowestTeamScore = teams.length ? Math.min(...teams.map(t => t.curr)) : 0;
 
@@ -176,12 +200,15 @@
                     const isWarning = s.curr < 30;
                     const currentRank = i + 1;
                     
-                    // TREND INDICATOR LOGIC
                     let trendIcon = '';
-                    if (s.lastRank && currentRank < s.lastRank) {
-                        trendIcon = '<span style="color:var(--neon-green-growth); text-shadow: 0 0 5px var(--neon-green-growth);">⬆️</span>';
-                    } else if (s.lastRank && currentRank > s.lastRank) {
-                        trendIcon = '<span style="color:var(--neon-red-glow); text-shadow: 0 0 5px var(--neon-red-glow);">⬇️</span>';
+                    if (s.lastRank !== null && !isNaN(s.lastRank)) {
+                        if (currentRank < s.lastRank) {
+                            trendIcon = '<span style="color:var(--neon-green-growth); text-shadow: 0 0 5px var(--neon-green-growth);">⬆️</span>';
+                        } else if (currentRank > s.lastRank) {
+                            trendIcon = '<span style="color:var(--neon-red-glow); text-shadow: 0 0 5px var(--neon-red-glow);">⬇️</span>';
+                        }
+                    } else {
+                        trendIcon = '<span style="color:#444; font-size:8px;">(No Data)</span>';
                     }
 
                     return `
@@ -211,9 +238,12 @@
                 const topS = staff[0] || {name:'N/A', curr:0};
 
                 document.getElementById('ticker-text').innerText = 
-                    `Team Precious ${tP.icon} leading at ${tP.curr}% | Team Divine ${tD.icon} at ${tD.curr}% | Team Mine ${tM.icon} at ${tM.curr}% | Team Zoul ${tZ.icon} at ${tZ.curr}% | ${topS.name} Star Performer at ${topS.curr}% | managed by Suraj Prakash, v38.6`;
+                    `Team Precious ${tP.icon} leading at ${tP.curr}% | Team Divine ${tD.icon} at ${tD.curr}% | Team Mine ${tM.icon} at ${tM.curr}% | Team Zoul ${tZ.icon} at ${tZ.curr}% | ${topS.name} Star Performer at ${topS.curr}% | managed by Suraj Prakash, v38.8`;
 
-            } catch (e) { console.error("Sync Error", e); }
+            } catch (e) { 
+                console.error("Sync Error", e); 
+                document.getElementById('debug-bar').innerText = "DEBUG: CONNECTION ERROR. CHECK GOOGLE SHEET LINK.";
+            }
         }
 
         setInterval(updateDashboard, 30000);
@@ -221,5 +251,3 @@
     </script>
 </body>
 </html>
-
-
