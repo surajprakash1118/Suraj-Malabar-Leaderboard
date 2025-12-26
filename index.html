@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGD Hesaraghatta | Suraj Prakash v37.2</title>
+    <title>MGD Hesaraghatta | Suraj Prakash v37.6</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -41,7 +41,6 @@
         .rank-tag { display: inline-block; padding: 1px 5px; border-radius: 3px; font-size: 0.6rem; font-weight: bold; margin-left: 5px; animation: float 3s infinite ease-in-out; }
 
         h1, h2, h3 { text-transform: uppercase; letter-spacing: 1px; margin: 0; text-align: center; }
-        
         .main-title { font-size: 1.6rem; color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); margin-bottom: 3px; cursor: pointer; }
         .sub-title { font-size: 0.7rem; color: var(--neon-gold); text-shadow: 0 0 5px var(--neon-gold); margin-bottom: 20px; opacity: 0.8; }
 
@@ -52,14 +51,7 @@
 
         .section-header { font-size: 1.1rem; margin-bottom: 15px; text-shadow: 0 0 5px white; }
         .team-title-highlight { font-size: 0.95rem; font-weight: 900; letter-spacing: 1px; }
-        
-        .leader-name-bracket { 
-            font-size: 0.9rem; 
-            color: #ffffff !important; 
-            opacity: 1 !important; 
-            font-weight: bold; 
-            text-shadow: 0 0 5px rgba(255,255,255,0.8); 
-        }
+        .leader-name-bracket { font-size: 0.9rem; color: #ffffff !important; opacity: 1 !important; font-weight: bold; text-shadow: 0 0 5px rgba(255,255,255,0.8); }
 
         .team-growth-highlight { font-size: 0.85rem; font-weight: 900; margin-left: 12px; }
         .growth-pos { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
@@ -122,9 +114,9 @@
     <div id="adminModal">
         <div class="modal-content">
             <div style="font-size: 0.55rem; color: #555; margin-bottom: 10px; text-align: right;">
-                System: PWA-CORE | Build: v37.2 | Status: <span class="c-green">ONLINE</span>
+                System: PWA-CORE | Build: v37.6 | Status: <span class="c-green">ONLINE</span>
             </div>
-            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v37.2</h2>
+            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v37.6</h2>
             <div id="adminFields"></div>
             <input type="text" id="in-ticker" placeholder="Update Broadcast" style="width:100%; margin:12px 0; padding:10px; font-size: 0.75rem;">
             <button onclick="saveData()" style="width:100%; padding:12px; background:var(--neon-green); border:none; font-weight:bold; cursor:pointer; color:black;">PUSH UPDATES</button>
@@ -244,7 +236,7 @@
         }
 
         function checkVersion() {
-            alert("MGD Leaderboard\nVersion: 37.2\nCommander: Suraj Prakash\nStatus: Live Sync Active");
+            alert("MGD Leaderboard\nVersion: 37.6\nCommander: Suraj Prakash\nStatus: Live Sync Active");
         }
 
         function party() { clickSfx(); confetti({ particleCount: 150, spread: 60, origin: { y: 0.6 } }); }
@@ -275,12 +267,16 @@
             document.getElementById('adminModal').style.display = 'none';
         }
 
-        // PWA "PERFECT ALIGNMENT" REGISTRATION (v37.2)
+        // PWA "ALWAYS-LIVE" PROTOCOL (v37.6)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/Suraj-Malabar-Leaderboard/sw.js', { scope: '/Suraj-Malabar-Leaderboard/' })
-                    .then(reg => console.log('MGD App Online'))
-                    .catch(err => console.error('PWA Error:', err));
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => {
+                        console.log('MGD App Online');
+                        // Heartbeat to prevent hibernation
+                        setInterval(() => { reg.update(); }, 60000);
+                    })
+                    .catch(err => console.error('PWA Setup Error:', err));
             });
         }
         window.onload = render;
