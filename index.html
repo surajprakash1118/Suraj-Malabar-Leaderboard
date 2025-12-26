@@ -41,7 +41,7 @@
         .rank-tag { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; margin-left: 8px; animation: float 3s infinite ease-in-out; }
 
         h1, h2, h3 { text-transform: uppercase; letter-spacing: 1px; margin: 0; text-align: center; }
-        .main-title { font-size: 1.8rem; color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); margin-bottom: 5px; }
+        .main-title { font-size: 1.8rem; color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); margin-bottom: 5px; cursor: pointer; }
         .sub-title { font-size: 0.8rem; color: var(--neon-gold); text-shadow: 0 0 8px var(--neon-gold); margin-bottom: 25px; opacity: 0.8; }
 
         .section-container {
@@ -85,7 +85,7 @@
 </head>
 <body>
 
-    <h1 class="main-title">MGD HESARAGHATTA</h1>
+    <h1 class="main-title" onclick="checkVersion()">MGD HESARAGHATTA</h1>
     <h2 class="sub-title">Managed By Suraj Prakash</h2>
 
     <div class="section-container">
@@ -109,10 +109,10 @@
     <div class="gear" onclick="openAdmin()">⚙️</div>
     <div id="adminModal">
         <div class="modal-content">
-            <div style="font-size: 0.6rem; color: #555; margin-bottom: 15px; text-align: right;">
-    System: PWA-CORE | Build: v35.1 | Status: <span class="c-green">ONLINE</span>
-</div>
-            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v35.0</h2>
+            <div style="font-size: 0.6rem; color: #555; margin-bottom: 10px; text-align: right;">
+                System: PWA-CORE | Build: v35.1 | Status: <span class="c-green">ONLINE</span>
+            </div>
+            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v35.1</h2>
             <div id="adminFields"></div>
             <input type="text" id="in-ticker" placeholder="Update Broadcast" style="width:100%; margin:15px 0; padding:10px; font-size: 0.8rem;">
             <button onclick="saveData()" style="width:100%; padding:12px; background:var(--neon-green); border:none; font-weight:bold; cursor:pointer; color:black;">PUSH UPDATES</button>
@@ -137,7 +137,7 @@
                 { id:'p', name:'Precious', leader:'Jaffar Siddik', pct:31, c:'gold', lastPct: 21 },
                 { id:'d', name:'Divine', leader:'Manu KR', pct:16, c:'blue', lastPct: 10 },
                 { id:'m', name:'Mine', leader:'Niveditha S', pct:8, c:'green', lastPct: 8 },
-                { id:'z', name:'Zoul', leader:'Boregowda', pct:4, c:'red', lastPct: 4, crit:true }
+                { id:'z', name:'Zoul', leader:'Boregowda', pct:4, c:'red', i:'⚡', lastPct: 4, crit:true }
             ],
             staff: [
                 { n:"LAKSHMI", t:"Precious", p:111, c:'gold', lastP: 111, lastRank: 1 },
@@ -233,6 +233,10 @@
             });
         }
 
+        function checkVersion() {
+            alert("MGD Leaderboard\nVersion: 35.1\nCommander: Suraj Prakash\nStatus: Live Sync Active");
+        }
+
         function party() { clickSfx(); confetti({ particleCount: 150, spread: 60, origin: { y: 0.6 } }); }
 
         function openAdmin() {
@@ -273,4 +277,3 @@
     </script>
 </body>
 </html>
-
