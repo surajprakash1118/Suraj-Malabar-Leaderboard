@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGD Hesaraghatta | Suraj Prakash v35.2</title>
+    <title>MGD Hesaraghatta | Suraj Prakash v35.3</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -41,6 +41,7 @@
         .rank-tag { display: inline-block; padding: 1px 5px; border-radius: 3px; font-size: 0.6rem; font-weight: bold; margin-left: 5px; animation: float 3s infinite ease-in-out; }
 
         h1, h2, h3 { text-transform: uppercase; letter-spacing: 1px; margin: 0; text-align: center; }
+        
         .main-title { font-size: 1.6rem; color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); margin-bottom: 3px; cursor: pointer; }
         .sub-title { font-size: 0.7rem; color: var(--neon-gold); text-shadow: 0 0 5px var(--neon-gold); margin-bottom: 20px; opacity: 0.8; }
 
@@ -51,9 +52,24 @@
 
         .section-header { font-size: 1.1rem; margin-bottom: 15px; text-shadow: 0 0 5px white; }
         
-        /* Updated V34 Style Headers */
-        .team-title-highlight { font-size: 1.1rem; font-weight: 900; letter-spacing: 1px; }
-        .leader-name-bracket { font-size: 1rem; color: #ffffff !important; opacity: 1 !important; font-weight: bold; text-shadow: 0 0 5px rgba(255,255,255,0.5); }
+        .team-title-highlight { font-size: 0.95rem; font-weight: 900; letter-spacing: 1px; }
+        
+        .leader-name-bracket { 
+            font-size: 0.9rem; 
+            color: #ffffff !important; 
+            opacity: 1 !important; 
+            font-weight: bold; 
+            text-shadow: 0 0 5px rgba(255,255,255,0.8); 
+        }
+
+        /* V35.3 GROWTH FONT - LARGER & BRIGHTER */
+        .team-growth-highlight {
+            font-size: 0.85rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            text-shadow: 0 0 8px var(--neon-green);
+            margin-left: 12px;
+        }
 
         .team-badge-highlight { font-weight: 900; padding: 2px 8px; border-radius: 3px; font-size: 0.6rem; letter-spacing: 1px; margin-bottom: 6px; display: inline-block; }
 
@@ -64,21 +80,21 @@
 
         .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
         .staff-card { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; }
-        .staff-name-large { font-size: 0.95rem; font-weight: bold; margin-bottom: 3px; display: flex; align-items: center; justify-content: space-between; }
-        .growth-box { font-size: 0.6rem; font-weight: bold; color: var(--neon-green); text-shadow: 0 0 3px var(--neon-green); }
+        .staff-name-large { font-size: 0.9rem; font-weight: bold; margin-bottom: 3px; display: flex; align-items: center; justify-content: space-between; }
+        .growth-box { font-size: 0.65rem; font-weight: bold; color: var(--neon-green); }
         .staff-details { font-size: 0.7rem; opacity: 0.8; display: flex; justify-content: space-between; }
 
         .critical { border-color: var(--neon-red) !important; box-shadow: 0 0 10px var(--neon-red) !important; animation: blink 1.5s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
 
         .ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; border-top: 1.5px solid var(--neon-blue); color: var(--neon-blue); overflow: hidden; padding: 8px 0; z-index: 5000; }
-        .ticker-move { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 35s linear infinite; font-size: 0.9rem; font-weight: bold; }
+        .ticker-move { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 35s linear infinite; font-size: 0.85rem; font-weight: bold; }
         @keyframes ticker { from { transform: translate(0, 0); } to { transform: translate(-100%, 0); } }
 
         .gear { position: fixed; bottom: 60px; right: 15px; font-size: 1.3rem; opacity: 0.15; cursor: pointer; z-index: 6000; }
         #adminModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 7000; align-items: center; justify-content: center; }
         .modal-content { background: var(--bg-dark); border: 2px solid var(--neon-gold); padding: 20px; border-radius: 12px; width: 90%; max-height: 80vh; overflow-y: auto; }
-        .input-box { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center; }
+        .input-box { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center; font-size: 0.8rem; }
         input { background: #111; border: 1px solid var(--neon-blue); color: white; padding: 5px; width: 55px; text-align: center; }
 
         .c-gold { color: var(--neon-gold); } .c-blue { color: var(--neon-blue); } .c-green { color: var(--neon-green); } .c-red { color: var(--neon-red); }
@@ -100,23 +116,23 @@
         <div id="staffGridCont" class="staff-grid"></div>
     </div>
 
-    <div id="lastSyncStamp" style="text-align: center; color: var(--neon-blue); font-size: 0.6rem; margin-top: 15px; opacity: 0.7; letter-spacing: 1px; text-shadow: 0 0 5px var(--neon-blue);">
+    <div id="lastSyncStamp" style="text-align: center; color: var(--neon-blue); font-size: 0.55rem; margin-top: 15px; opacity: 0.6; letter-spacing: 1px; text-shadow: 0 0 5px var(--neon-blue);">
         LAST REFRESH: WAITING FOR SYNC...
     </div>
 
     <div class="ticker-wrap">
-        <div class="ticker-move" id="liveTicker">LOADING SURAJ'S BROADCAST...</div>
+        <div class="ticker-move" id="liveTicker">LOADING RECOGNITION BROADCAST...</div>
     </div>
 
     <div class="gear" onclick="openAdmin()">⚙️</div>
     <div id="adminModal">
         <div class="modal-content">
-            <div style="font-size: 0.6rem; color: #555; margin-bottom: 10px; text-align: right;">
-                System: PWA-CORE | Build: v35.2 | Status: <span class="c-green">ONLINE</span>
+            <div style="font-size: 0.55rem; color: #555; margin-bottom: 10px; text-align: right;">
+                System: PWA-CORE | Build: v35.3 | Status: <span class="c-green">ONLINE</span>
             </div>
-            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v35.2</h2>
+            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v35.3</h2>
             <div id="adminFields"></div>
-            <input type="text" id="in-ticker" placeholder="Update Broadcast" style="width:100%; margin:15px 0; padding:10px; font-size: 0.8rem;">
+            <input type="text" id="in-ticker" placeholder="Update Broadcast" style="width:100%; margin:12px 0; padding:10px; font-size: 0.75rem;">
             <button onclick="saveData()" style="width:100%; padding:12px; background:var(--neon-green); border:none; font-weight:bold; cursor:pointer; color:black;">PUSH UPDATES</button>
         </div>
     </div>
@@ -133,14 +149,13 @@
         const rankingIcons = ['🏎️', '🏍️', '🏃', '🚶'];
 
         let state = {
-            // Updated Ticker as per V35.2 requirements
             ticker: "Team Precious 🏎️ leading at 31% | Team Divine 🏍️ at 16% | Team Mine 🏃 at 8% | Team Zoul 🚶 at 4% | LAKSHMI Star Performer at 111% | managed by Suraj Prakash, V35.1",
             lastUpdated: "",
             teams: [
                 { id:'p', name:'Precious', leader:'Jaffar Siddik', pct:31, c:'gold', lastPct: 21 },
                 { id:'d', name:'Divine', leader:'Manu KR', pct:16, c:'blue', lastPct: 10 },
                 { id:'m', name:'Mine', leader:'Niveditha S', pct:8, c:'green', lastPct: 8 },
-                { id:'z', name:'Zoul', leader:'Boregowda', pct:4, c:'red', i:'⚡', lastPct: 4, crit:true }
+                { id:'z', name:'Zoul', leader:'Boregowda', pct:4, c:'red', lastPct: 4, crit:true }
             ],
             staff: [
                 { n:"LAKSHMI", t:"Precious", p:111, c:'gold', lastP: 111, lastRank: 1 },
@@ -205,11 +220,11 @@
                                 ${idx === 0 ? '<span class="crown">👑</span>' : ''} 
                                 <span class="team-title-highlight">${t.name.toUpperCase()}</span>
                                 <span class="leader-name-bracket">&nbsp;(${t.leader})</span>
-                                <span style="font-size:0.55rem; margin-left:10px; opacity:0.7;">${growth > 0 ? '+' : ''}${growth}%</span>
+                                <span class="team-growth-highlight">${growth > 0 ? '+' : ''}${growth}%</span>
                             </div>
                             <div class="race-track"><div class="race-bar bg-${t.c}" style="width:${t.pct}%"><span class="race-marker">${icon}</span></div></div>
                         </div>
-                        <div class="c-${t.c}" style="font-size:1.4rem; font-weight:bold; margin-left:12px;">${t.pct}%</div>
+                        <div class="c-${t.c}" style="font-size:1.3rem; font-weight:bold; margin-left:12px;">${t.pct}%</div>
                     </div>`;
             });
 
@@ -237,7 +252,7 @@
         }
 
         function checkVersion() {
-            alert("MGD Leaderboard\nVersion: 35.2\nCommander: Suraj Prakash\nStatus: Live Sync Active");
+            alert("MGD Leaderboard\nVersion: 35.3\nCommander: Suraj Prakash\nStatus: Live Sync Active");
         }
 
         function party() { clickSfx(); confetti({ particleCount: 150, spread: 60, origin: { y: 0.6 } }); }
