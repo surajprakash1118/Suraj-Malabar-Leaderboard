@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGD Hesaraghatta v37.4</title>
+    <title>MGD Hesaraghatta v37.5</title>
     <style>
         :root {
             --bg-black: #050505;
@@ -13,64 +13,64 @@
             --mine: #39ff14;
             --zoul: #ff1744;
             --neon-cyan: #00f2ff;
-            --neon-red: #ff0000;
         }
 
-        body { background-color: var(--bg-black); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; text-transform: uppercase; }
+        body { 
+            background-color: var(--bg-black); 
+            color: white; 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            text-transform: uppercase;
+        }
 
-        /* HEADER */
+        /* NEON TEXT EFFECTS */
+        .neon-text-cyan { text-shadow: 0 0 10px var(--neon-cyan); }
+        .neon-text-white { text-shadow: 0 0 5px #fff; }
+
         .header { text-align: center; margin-bottom: 25px; }
-        .main-title { color: var(--neon-cyan); font-size: 28px; font-weight: 900; letter-spacing: 2px; text-shadow: 0 0 10px var(--neon-cyan); margin: 0; }
+        .main-title { color: var(--neon-cyan); font-size: 28px; font-weight: 900; letter-spacing: 2px; margin: 0; }
         .sub-title { color: var(--precious); font-size: 14px; margin: 5px 0; }
-        .deadline { color: var(--zoul); font-weight: bold; font-size: 18px; }
+        .deadline { color: var(--zoul); font-weight: bold; font-size: 18px; text-shadow: 0 0 8px var(--zoul); }
 
-        /* SECTION BOXES */
-        .outer-box { border: 2px solid var(--neon-cyan); border-radius: 20px; padding: 20px; margin-bottom: 25px; }
+        .outer-box { border: 2px solid var(--neon-cyan); border-radius: 20px; padding: 20px; margin-bottom: 25px; box-shadow: 0 0 15px rgba(0, 242, 255, 0.3); }
         .section-title { text-align: center; font-weight: 900; font-size: 20px; margin-bottom: 20px; letter-spacing: 2px; }
 
-        /* TOP PART: TEAM RACING STANDINGS */
-        .race-card { background: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 12px; border-left: 4px solid #333; position: relative; }
+        /* WARNING STYLES */
+        .warning-glow-red { border: 2px solid var(--zoul) !important; box-shadow: 0 0 20px var(--zoul) !important; }
+        @keyframes blinker { 50% { opacity: 0; } }
+        .blinking-warning { animation: blinker 0.8s linear infinite; color: var(--zoul); margin-right: 5px; }
+
+        /* TOP PART: TEAM RACING */
+        .race-card { background: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 12px; border: 1px solid #333; position: relative; }
         .race-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .race-name { font-size: 18px; font-weight: 900; display: flex; align-items: center; }
+        .race-name { font-size: 18px; font-weight: 900; color: #fff; }
         .race-pct { font-size: 24px; font-weight: 900; }
-        .race-track { background: #222; height: 24px; border-radius: 12px; overflow: hidden; position: relative; }
-        .race-fill { height: 100%; border-radius: 12px; position: relative; transition: width 1s; }
+        .race-track { background: #111; height: 26px; border-radius: 13px; overflow: hidden; position: relative; border: 1px solid #444; }
+        .race-fill { height: 100%; border-radius: 13px; position: relative; transition: width 1s; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
         .race-icon { position: absolute; right: 0; top: 50%; transform: translateY(-50%); font-size: 16px; }
 
-        /* BOTTOM PART: STAFF LEADERBOARD GRID */
+        /* BOTTOM PART: STAFF GRID */
         .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
         .staff-card { background: var(--card-bg); border-radius: 10px; padding: 12px; border: 1px solid #222; position: relative; }
         .staff-tag { display: inline-block; font-size: 9px; font-weight: 900; padding: 2px 6px; border-radius: 3px; color: black; margin-bottom: 8px; }
-        .staff-name { font-size: 16px; font-weight: 900; margin-bottom: 5px; display: flex; align-items: center; }
+        .staff-name { font-size: 16px; font-weight: 900; margin-bottom: 5px; color: #fff; }
         .staff-stats { display: flex; justify-content: space-between; font-size: 9px; font-weight: bold; margin-bottom: 5px; }
-        .staff-bar { background: #222; height: 4px; border-radius: 2px; width: 100%; overflow: hidden; }
-        .staff-fill { height: 100%; transition: width 1s; }
+        .staff-bar { background: #111; height: 6px; border-radius: 3px; width: 100%; overflow: hidden; }
+        .staff-fill { height: 100%; transition: width 1s; box-shadow: 0 0 8px rgba(255,255,255,0.2); }
 
-        /* RANK BADGE STYLES */
-        .rank-badge { position: absolute; right: 10px; top: 12px; font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 3px; color: white; }
-        .rank-1 { background: #FFD700; color: black; } 
-        .rank-2 { background: #C0C0C0; color: black; } 
-        .rank-3 { background: #CD7F32; color: black; } 
-        .rank-other { background: #333; color: #888; }
+        /* RANK BADGES */
+        .rank-badge { position: absolute; right: 10px; top: 12px; font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 3px; background: #222; }
 
-        /* RANK TREND ARROWS */
-        .trend-arrow { margin-right: 4px; }
-        .trend-up { color: #39FF14; }
-        .trend-down { color: #FF1744; }
-
-        /* WARNING GLOW LOGIC */
-        .warning-glow { box-shadow: inset 0 0 8px var(--neon-red); border-color: var(--neon-red) !important; }
-        .warning-icon { margin-left: 5px; font-size: 14px; }
-
-        /* ANIMATIONS */
+        /* CROWN */
         @keyframes crown-rotate { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
         .rotating-crown { display: inline-block; animation: crown-rotate 3s linear infinite; perspective: 1000px; margin-right: 5px; }
 
-        /* TEAM COLORS */
-        .PRECIOUS { color: var(--precious); } .PRECIOUS-bg { background: var(--precious); }
-        .DIVINE { color: var(--divine); } .DIVINE-bg { background: var(--divine); }
-        .MINE { color: var(--mine); } .MINE-bg { background: var(--mine); }
-        .ZOUL { color: var(--zoul); } .ZOUL-bg { background: var(--zoul); }
+        /* TEAM COLORS (BG ONLY AS REQUESTED) */
+        .PRECIOUS-bg { background: var(--precious); }
+        .DIVINE-bg { background: var(--divine); }
+        .MINE-bg { background: var(--mine); }
+        .ZOUL-bg { background: var(--zoul); }
 
         /* TICKER */
         .ticker { background: #000; border-top: 2px solid var(--neon-cyan); color: var(--neon-cyan); position: fixed; bottom: 0; left: 0; width: 100%; padding: 8px; font-weight: bold; overflow: hidden; z-index: 1000; }
@@ -81,8 +81,8 @@
 <body>
 
     <div class="header">
-        <h1 class="main-title">MGD HESARAGHATTA</h1>
-        <div class="sub-title">MANAGED BY SURAJ PRAKASH</div>
+        <h1 class="main-title neon-text-cyan">MGD HESARAGHATTA</h1>
+        <div class="sub-title neon-text-white">MANAGED BY SURAJ PRAKASH</div>
         <div class="deadline">DEADLINE: 31 DAYS PENDING</div>
     </div>
 
@@ -97,11 +97,18 @@
     </div>
 
     <div class="ticker">
-        <div class="ticker-move" id="ticker-text">SYNCING LIVE HUB DATA...</div>
+        <div class="ticker-move" id="ticker-text">CONNECTING TO MGD HUB...</div>
     </div>
 
     <script>
         const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS6tzd7SDpOQ6zHwIGlxNBRFGEG-62iLWa2wMyGyFgjxAWQC3KxP_qBicWEWuBaMsCz1Ydeq-im64_b/pub?gid=0&single=true&output=csv';
+
+        const getAchieveColor = (v) => {
+            if (v < 30) return "#8b0000"; // Dark Red
+            if (v < 50) return "#ff4d4d"; // Light Red
+            if (v < 75) return "#90ee90"; // Light Green
+            return "#006400"; // Dark Green
+        };
 
         async function updateDashboard() {
             try {
@@ -121,28 +128,31 @@
                         curr: parseFloat(cols[3]) || 0,
                         prev: parseFloat(cols[4]) || 0,
                         icon: cols[5]?.trim() || '🏎️',
-                        lastRank: parseInt(cols[6]) || 0 
+                        lastRank: parseInt(cols[6]) || 0
                     };
                     if(entry.type === 'team') teams.push(entry);
                     else if(entry.type === 'staff') staff.push(entry);
                 });
 
-                // RENDER TEAMS
+                // IDENTIFY LOWEST TEAM
                 teams.sort((a,b) => b.curr - a.curr);
+                const lowestTeamName = teams.length ? teams[teams.length - 1].name : null;
+
+                // RENDER TEAMS
                 document.getElementById('team-racing').innerHTML = teams.map((t, i) => {
                     const growth = t.curr - t.prev;
-                    const isNoGrowth = growth <= 0;
-                    const warningClass = isNoGrowth ? 'warning-glow' : '';
-                    const warningIcon = isNoGrowth ? '<span class="warning-icon">⚠️</span>' : '';
+                    const growthCol = growth > 0 ? "var(--mine)" : "var(--zoul)";
+                    const barCol = getAchieveColor(t.curr);
+                    const isLowest = t.name === lowestTeamName;
 
                     return `
-                    <div class="race-card ${warningClass}" style="border-left-color: var(--${t.name.toLowerCase()})">
+                    <div class="race-card ${isLowest ? 'warning-glow-red' : ''}">
                         <div class="race-header">
-                            <div class="race-name ${t.name}">${i === 0 ? '<span class="rotating-crown">👑</span>' : ''} ${t.name} ${warningIcon} <span style="font-size:12px; color:#888;">(${t.sub})</span> <span style="color:var(--mine); font-size:12px;">+${growth.toFixed(0)}%</span></div>
-                            <div class="race-pct ${t.name}">${t.curr}%</div>
+                            <div class="race-name">${i === 0 ? '<span class="rotating-crown">👑</span>' : ''} ${t.name} <span style="font-size:12px; color:#888;">(${t.sub})</span> <span style="color:${growthCol}; font-size:12px;">${growth > 0 ? '+' : ''}${growth.toFixed(0)}%</span></div>
+                            <div class="race-pct" style="color: ${barCol}">${t.curr}%</div>
                         </div>
                         <div class="race-track">
-                            <div class="race-fill ${t.name}-bg" style="width: ${t.curr}%">
+                            <div class="race-fill" style="width: ${t.curr}%; background: ${barCol}; box-shadow: 0 0 10px ${barCol}">
                                 <span class="race-icon">${t.icon}</span>
                             </div>
                         </div>
@@ -152,37 +162,32 @@
                 // RENDER STAFF
                 staff.sort((a,b) => b.curr - a.curr);
                 document.getElementById('staff-leaderboard').innerHTML = staff.map((s, i) => {
-                    const currentRank = i + 1;
                     const growth = s.curr - s.prev;
-                    const isNoGrowth = growth <= 0;
-                    const warningClass = isNoGrowth ? 'warning-glow' : '';
-                    const warningIcon = isNoGrowth ? '<span class="warning-icon">⚠️</span>' : '';
-                    const crown = i === 0 ? '<span class="rotating-crown">👑</span>' : '';
-
-                    let rankClass = 'rank-other';
-                    if (currentRank === 1) rankClass = 'rank-1';
-                    else if (currentRank === 2) rankClass = 'rank-2';
-                    else if (currentRank === 3) rankClass = 'rank-3';
-
-                    let trendArrow = '';
-                    if (s.lastRank && currentRank < s.lastRank) trendArrow = '<span class="trend-arrow trend-up">⬆️</span>';
-                    else if (s.lastRank && currentRank > s.lastRank) trendArrow = '<span class="trend-arrow trend-down">⬇️</span>';
+                    const growthCol = growth > 0 ? "var(--mine)" : "var(--zoul)";
+                    const barCol = getAchieveColor(s.curr);
+                    const isWarning = s.curr < 40;
+                    const isCritical = s.curr < 30;
+                    const currentRank = i + 1;
+                    
+                    let trendIcon = '';
+                    if (s.lastRank && currentRank < s.lastRank) trendIcon = '<span style="color:var(--mine)">⬆️</span>';
+                    else if (s.lastRank && currentRank > s.lastRank) trendIcon = '<span style="color:var(--zoul)">⬇️</span>';
 
                     return `
-                        <div class="staff-card ${warningClass}">
+                        <div class="staff-card ${isWarning ? 'warning-glow-red' : ''}">
                             <div class="staff-tag ${s.sub}-bg">${s.sub}</div>
-                            <div class="staff-name ${s.sub}">${crown}${s.name}${warningIcon}</div>
+                            <div class="staff-name">${isCritical ? '<span class="blinking-warning">⚠️</span>' : ''}${i === 0 ? '<span class="rotating-crown">👑</span>' : ''}${s.name}</div>
                             <div class="staff-stats">
-                                <span style="color:var(--mine)">+${growth.toFixed(0)}% GROWTH</span>
+                                <span style="color:${growthCol}">${growth > 0 ? '+' : ''}${growth.toFixed(0)}% GROWTH</span>
                                 <span style="color:#eee">${s.curr}% ACHIEVED</span>
                             </div>
-                            <div class="staff-bar"><div class="staff-fill ${s.sub}-bg" style="width: ${Math.min(s.curr, 100)}%"></div></div>
-                            <div class="rank-badge ${rankClass}">${trendArrow}#${currentRank}</div>
+                            <div class="staff-bar"><div class="staff-fill" style="width: ${Math.min(s.curr, 100)}%; background: ${barCol}; box-shadow: 0 0 5px ${barCol}"></div></div>
+                            <div class="rank-badge">${trendIcon} #${currentRank}</div>
                         </div>
                     `;
                 }).join('');
 
-                // TICKER LOGIC
+                // BUILD TICKER
                 const tP = teams.find(t => t.name === 'PRECIOUS') || {curr:0, icon:'🏎️'};
                 const tD = teams.find(t => t.name === 'DIVINE') || {curr:0, icon:'🏍️'};
                 const tM = teams.find(t => t.name === 'MINE') || {curr:0, icon:'🏃'};
@@ -190,7 +195,7 @@
                 const topS = staff[0] || {name:'N/A', curr:0};
 
                 document.getElementById('ticker-text').innerText = 
-                    `Team Precious ${tP.icon} leading at ${tP.curr}% | Team Divine ${tD.icon} at ${tD.curr}% | Team Mine ${tM.icon} at ${tM.curr}% | Team Zoul ${tZ.icon} at ${tZ.curr}% | ${topS.name} Star Performer at ${topS.curr}% | managed by Suraj Prakash, V37.4`;
+                    `Team Precious ${tP.icon} leading at ${tP.curr}% | Team Divine ${tD.icon} at ${tD.curr}% | Team Mine ${tM.icon} at ${tM.curr}% | Team Zoul ${tZ.icon} at ${tZ.curr}% | ${topS.name} Star Performer at ${topS.curr}% | managed by Suraj Prakash, V37.2`;
 
             } catch (e) { console.error("Sync Error", e); }
         }
