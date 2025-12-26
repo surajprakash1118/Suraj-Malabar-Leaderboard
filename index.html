@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGD Hesaraghatta | Suraj Prakash v37.0</title>
+    <title>MGD Hesaraghatta | Suraj Prakash v37.2</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -82,7 +82,6 @@
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
 
         .ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; border-top: 1.5px solid var(--neon-blue); color: var(--neon-blue); overflow: hidden; padding: 8px 0; z-index: 5000; }
-        /* v37.0 SPEED INCREASE: Changed 35s to 25s */
         .ticker-move { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 25s linear infinite; font-size: 0.85rem; font-weight: bold; }
         @keyframes ticker { from { transform: translate(0, 0); } to { transform: translate(-100%, 0); } }
 
@@ -123,9 +122,9 @@
     <div id="adminModal">
         <div class="modal-content">
             <div style="font-size: 0.55rem; color: #555; margin-bottom: 10px; text-align: right;">
-                System: PWA-CORE | Build: v37.0 | Status: <span class="c-green">ONLINE</span>
+                System: PWA-CORE | Build: v37.2 | Status: <span class="c-green">ONLINE</span>
             </div>
-            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v37.0</h2>
+            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v37.2</h2>
             <div id="adminFields"></div>
             <input type="text" id="in-ticker" placeholder="Update Broadcast" style="width:100%; margin:12px 0; padding:10px; font-size: 0.75rem;">
             <button onclick="saveData()" style="width:100%; padding:12px; background:var(--neon-green); border:none; font-weight:bold; cursor:pointer; color:black;">PUSH UPDATES</button>
@@ -144,8 +143,7 @@
         const rankingIcons = ['🏎️', '🏍️', '🏃', '🚶'];
 
         let state = {
-            // UPDATED TICKER VERSION BRANDING
-            ticker: "Team Precious 🏎️ leading at 31% | Team Divine 🏍️ at 16% | Team Mine 🏃 at 8% | Team Zoul 🚶 at 4% | LAKSHMI Star Performer at 111% | managed by Suraj Prakash, V37.0",
+            ticker: "Team Precious 🏎️ leading at 31% | Team Divine 🏍️ at 16% | Team Mine 🏃 at 8% | Team Zoul 🚶 at 4% | LAKSHMI Star Performer at 111% | managed by Suraj Prakash, V37.2",
             lastUpdated: "",
             teams: [
                 { id:'p', name:'Precious', leader:'Jaffar Siddik', pct:31, c:'gold', lastPct: 21 },
@@ -246,13 +244,12 @@
         }
 
         function checkVersion() {
-            alert("MGD Leaderboard\nVersion: 37.0\nCommander: Suraj Prakash\nStatus: Live Sync Active");
+            alert("MGD Leaderboard\nVersion: 37.2\nCommander: Suraj Prakash\nStatus: Live Sync Active");
         }
 
         function party() { clickSfx(); confetti({ particleCount: 150, spread: 60, origin: { y: 0.6 } }); }
 
         function openAdmin() {
-            // PASSWORD GATE: Replace "Suraj@2026" with your new secret password
             if(prompt("ACCESS CODE:") === "Suraj@2026") {
                 const fields = document.getElementById('adminFields');
                 fields.innerHTML = '<h4 class="c-blue" style="font-size:0.7rem">TEAM SCORES</h4>';
@@ -278,9 +275,12 @@
             document.getElementById('adminModal').style.display = 'none';
         }
 
+        // PWA "PERFECT ALIGNMENT" REGISTRATION (v37.2)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').then(reg => console.log('MGD Online'));
+                navigator.serviceWorker.register('/Suraj-Malabar-Leaderboard/sw.js', { scope: '/Suraj-Malabar-Leaderboard/' })
+                    .then(reg => console.log('MGD App Online'))
+                    .catch(err => console.error('PWA Error:', err));
             });
         }
         window.onload = render;
