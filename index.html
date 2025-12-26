@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGD Hesaraghatta | Suraj Prakash v38.1</title>
+    <title>MGD Hesaraghatta | Suraj Prakash v38.2</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -44,16 +44,11 @@
         .main-title { font-size: 1.6rem; color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); margin-bottom: 3px; cursor: pointer; }
         .sub-title { font-size: 0.7rem; color: var(--neon-gold); text-shadow: 0 0 5px var(--neon-gold); margin-bottom: 10px; opacity: 0.8; }
         
-        /* COUNTDOWN & FLASHING STYLING */
         #daysPending { font-size: 0.9rem; color: var(--neon-red); font-weight: 900; text-shadow: 0 0 10px var(--neon-red); margin-bottom: 20px; text-align: center; display: block; letter-spacing: 2px; }
         .critical-flash { animation: alert-flash 1s infinite alternate; }
         @keyframes alert-flash { from { opacity: 1; text-shadow: 0 0 15px var(--neon-red); } to { opacity: 0.3; text-shadow: 0 0 2px var(--neon-red); } }
 
-        .section-container {
-            background: var(--card-bg); border: 1.2px solid var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue);
-            border-radius: 12px; padding: 15px; margin-bottom: 25px; backdrop-filter: blur(8px);
-        }
-
+        .section-container { background: var(--card-bg); border: 1.2px solid var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); border-radius: 12px; padding: 15px; margin-bottom: 25px; backdrop-filter: blur(8px); }
         .section-header { font-size: 1.1rem; margin-bottom: 15px; text-shadow: 0 0 5px white; }
         .team-title-highlight { font-size: 0.95rem; font-weight: 900; letter-spacing: 1px; }
         .leader-name-bracket { font-size: 0.9rem; color: #ffffff !important; opacity: 1 !important; font-weight: bold; text-shadow: 0 0 5px rgba(255,255,255,0.8); }
@@ -117,9 +112,9 @@
     <div id="adminModal">
         <div class="modal-content">
             <div style="font-size: 0.55rem; color: #555; margin-bottom: 10px; text-align: right;">
-                System: PWA-CORE | Build: v38.1 | Status: <span class="c-green">ONLINE</span>
+                System: PWA-CORE | Build: v38.2 | Status: <span class="c-green">ONLINE</span>
             </div>
-            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v38.1</h2>
+            <h2 class="c-gold" style="font-size:1.1rem; margin-bottom:12px;">ADMIN CONSOLE v38.2</h2>
             <div id="adminFields"></div>
             <input type="text" id="in-ticker" placeholder="Update Broadcast" style="width:100%; margin:12px 0; padding:10px; font-size: 0.75rem;">
             <button onclick="saveData()" style="width:100%; padding:12px; background:var(--neon-green); border:none; font-weight:bold; cursor:pointer; color:black;">PUSH UPDATES</button>
@@ -195,15 +190,9 @@
             const distance = endDate - now;
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const display = document.getElementById("daysPending");
-            
             display.innerText = days > 0 ? `DEADLINE: ${days} DAYS PENDING` : "RACE CONCLUDED";
-            
-            // v38.1 Logic: Flash during the final 7 days
-            if (days > 0 && days <= 7) {
-                display.classList.add("critical-flash");
-            } else {
-                display.classList.remove("critical-flash");
-            }
+            if (days > 0 && days <= 7) { display.classList.add("critical-flash"); }
+            else { display.classList.remove("critical-flash"); }
         }
 
         function render() {
@@ -256,10 +245,7 @@
             });
         }
 
-        function checkVersion() {
-            alert("MGD Leaderboard\nVersion: 38.1\nCommander: Suraj Prakash\nStatus: Live Sync Active");
-        }
-
+        function checkVersion() { alert("MGD Leaderboard\nVersion: 38.2\nCommander: Suraj Prakash\nStatus: Live Sync Active"); }
         function party() { clickSfx(); confetti({ particleCount: 150, spread: 60, origin: { y: 0.6 } }); }
 
         function openAdmin() {
@@ -275,15 +261,10 @@
 
         function saveData() {
             state.teams.forEach((t, i) => { t.lastPct = t.pct; t.pct = parseInt(document.getElementById(`t-${i}`).value); });
-            state.staff.forEach((s, i) => { 
-                s.lastRank = state.staff.indexOf(s) + 1;
-                s.lastP = s.p;
-                s.p = parseInt(document.getElementById(`s-${i}`).value);
-            });
+            state.staff.forEach((s, i) => { s.lastRank = state.staff.indexOf(s) + 1; s.lastP = s.p; s.p = parseInt(document.getElementById(`s-${i}`).value); });
             state.ticker = document.getElementById('in-ticker').value || state.ticker;
             const now = new Date();
-            state.lastUpdated = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) + ", " + 
-                              now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+            state.lastUpdated = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) + ", " + now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
             render(); 
             document.getElementById('adminModal').style.display = 'none';
         }
@@ -291,10 +272,7 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
-                    .then(reg => {
-                        console.log('MGD App Online');
-                        setInterval(() => { reg.update(); }, 60000);
-                    })
+                    .then(reg => { console.log('MGD App Online'); setInterval(() => { reg.update(); }, 60000); })
                     .catch(err => console.error('PWA Setup Error:', err));
             });
         }
