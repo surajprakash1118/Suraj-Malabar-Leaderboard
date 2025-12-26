@@ -1,8 +1,9 @@
 {
-  "name": "MGD Hesaraghatta | Suraj Prakash v35.0",
+  "name": "MGD Hesaraghatta | Suraj Prakash v37.2",
   "short_name": "Suraj Prakash",
   "description": "Live Sales Competition for MGD Hesaraghatta",
-  "start_url": "index.html",
+  "start_url": "/Suraj-Malabar-Leaderboard/index.html",
+  "scope": "/Suraj-Malabar-Leaderboard/",
   "display": "standalone",
   "background_color": "#050510",
   "theme_color": "#00f3ff",
