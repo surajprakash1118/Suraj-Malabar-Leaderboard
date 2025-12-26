@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGD Hesaraghatta v37.8</title>
+    <title>MGD Hesaraghatta v37.9</title>
     <style>
         :root {
             --bg-black: #050505;
@@ -21,62 +21,59 @@
             color: white; 
             font-family: 'Segoe UI', sans-serif; 
             margin: 0; 
-            padding: 10px; 
+            padding: 15px; 
             text-transform: uppercase;
-            font-size: 0.85rem;
         }
 
-        /* NEON ELEMENTS */
-        .neon-bar-glow { box-shadow: 0 0 15px currentColor; }
-        .critical-glow-red { border: 1.5px solid var(--neon-red-glow) !important; box-shadow: 0 0 15px var(--neon-red-glow) !important; }
+        /* MASTER NEON BAR GLOW */
+        .neon-bar-glow { box-shadow: 0 0 18px currentColor; }
+        .critical-glow-red { border: 2px solid var(--neon-red-glow) !important; box-shadow: 0 0 25px var(--neon-red-glow) !important; }
         
         @keyframes blinker { 50% { opacity: 0; } }
         .blinking-warning { 
             animation: blinker 0.8s linear infinite; 
             color: var(--neon-red-glow); 
-            text-shadow: 0 0 10px var(--neon-red-glow);
-            font-size: 11px; 
+            text-shadow: 0 0 12px var(--neon-red-glow);
+            font-size: 14px; 
         }
 
-        .header { text-align: center; margin-bottom: 15px; }
-        .main-title { color: var(--zoul); font-size: 22px; font-weight: 900; letter-spacing: 1.5px; text-shadow: 0 0 12px var(--zoul); margin: 0; }
-        .sub-title { color: #ffffff; font-size: 11px; margin: 3px 0; }
-        .deadline { color: var(--neon-red-glow); font-weight: bold; font-size: 14px; text-shadow: 0 0 8px var(--neon-red-glow); }
+        .header { text-align: center; margin-bottom: 25px; }
+        .main-title { color: var(--zoul); font-size: 28px; font-weight: 900; letter-spacing: 2px; text-shadow: 0 0 15px var(--zoul); margin: 0; }
+        .sub-title { color: #ffffff; font-size: 14px; margin: 5px 0; }
+        .deadline { color: var(--neon-red-glow); font-weight: bold; font-size: 18px; text-shadow: 0 0 10px var(--neon-red-glow); }
 
-        .outer-box { border: 1.5px solid var(--zoul); border-radius: 15px; padding: 15px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0, 229, 255, 0.2); }
-        .section-title { text-align: center; font-weight: 900; font-size: 16px; margin-bottom: 15px; letter-spacing: 1.5px; }
+        .outer-box { border: 2px solid var(--zoul); border-radius: 20px; padding: 20px; margin-bottom: 25px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); }
+        .section-title { text-align: center; font-weight: 900; font-size: 20px; margin-bottom: 20px; letter-spacing: 2px; }
 
         /* TOP PART: TEAM RACING */
-        .race-card { background: var(--card-bg); border-radius: 10px; padding: 10px; margin-bottom: 10px; border: 1px solid #222; position: relative; }
-        .race-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .race-name { font-size: 16px; font-weight: 900; } /* Glow Removed */
-        .manager-name { color: #ffffff; font-size: 10px; font-weight: normal; text-shadow: none; }
-        .race-pct { font-size: 20px; font-weight: 900; }
-        .race-track { background: #000; height: 26px; border-radius: 13px; overflow: hidden; position: relative; border: 1px solid #333; }
-        .race-fill { height: 100%; border-radius: 13px; position: relative; transition: width 1s; }
-        .race-icon { position: absolute; right: -2px; top: 50%; transform: translateY(-50%); font-size: 24px; filter: drop-shadow(0 0 4px white); }
+        .race-card { background: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #333; position: relative; }
+        .race-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .race-name { font-size: 20px; font-weight: 900; } 
+        .manager-name { color: #ffffff; font-size: 12px; font-weight: normal; }
+        .race-pct { font-size: 26px; font-weight: 900; }
+        .race-track { background: #000; height: 32px; border-radius: 16px; overflow: hidden; position: relative; border: 1px solid #444; }
+        .race-fill { height: 100%; border-radius: 16px; position: relative; transition: width 1s; }
+        .race-icon { position: absolute; right: -5px; top: 50%; transform: translateY(-50%); font-size: 28px; filter: drop-shadow(0 0 5px white); }
 
         /* BOTTOM PART: STAFF GRID */
-        .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
-        .staff-card { background: var(--card-bg); border-radius: 8px; padding: 10px; border: 1px solid #222; position: relative; }
-        .staff-tag { display: inline-block; font-size: 8px; font-weight: 900; padding: 1.5px 6px; border-radius: 2px; color: black; margin-bottom: 6px; }
-        .staff-name { font-size: 14px; font-weight: 900; margin-bottom: 4px; } /* Glow Removed */
-        .staff-stats { display: flex; justify-content: space-between; font-size: 8px; font-weight: bold; margin-bottom: 6px; }
-        .staff-bar { background: #000; height: 6px; border-radius: 3px; width: 100%; overflow: hidden; }
+        .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px; }
+        .staff-card { background: var(--card-bg); border-radius: 10px; padding: 12px; border: 1px solid #222; position: relative; }
+        .staff-tag { display: inline-block; font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 3px; color: black; margin-bottom: 8px; }
+        .staff-name { font-size: 18px; font-weight: 900; margin-bottom: 6px; }
+        .staff-stats { display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; margin-bottom: 8px; }
+        .staff-bar { background: #000; height: 8px; border-radius: 4px; width: 100%; overflow: hidden; }
         .staff-fill { height: 100%; transition: width 1s; }
 
-        /* ANIMATIONS */
         @keyframes crown-rotate { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
-        .rotating-crown { display: inline-block; animation: crown-rotate 3s linear infinite; perspective: 1000px; margin-right: 6px; }
+        .rotating-crown { display: inline-block; animation: crown-rotate 3s linear infinite; perspective: 1000px; margin-right: 8px; }
 
-        /* TEAM COLORS BGs */
         .PRECIOUS-bg { background: var(--precious); }
         .DIVINE-bg { background: var(--divine); }
         .MINE-bg { background: var(--mine); }
         .ZOUL-bg { background: var(--zoul); }
 
         /* TICKER */
-        .ticker { background: #000; border-top: 1.5px solid var(--zoul); color: var(--zoul); position: fixed; bottom: 0; left: 0; width: 100%; padding: 8px; font-size: 12px; font-weight: bold; overflow: hidden; z-index: 1000; }
+        .ticker { background: #000; border-top: 2px solid var(--zoul); color: var(--zoul); position: fixed; bottom: 0; left: 0; width: 100%; padding: 10px; font-size: 14px; font-weight: bold; overflow: hidden; z-index: 1000; }
         .ticker-move { display: inline-block; white-space: nowrap; animation: move 25s linear infinite; }
         @keyframes move { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
     </style>
@@ -100,7 +97,7 @@
     </div>
 
     <div class="ticker">
-        <div class="ticker-move" id="ticker-text">SYNCHRONIZING MGD HUB v37.8...</div>
+        <div class="ticker-move" id="ticker-text">SYNCHRONIZING MGD HUB v37.9...</div>
     </div>
 
     <script>
@@ -151,18 +148,18 @@
                     return `
                     <div class="race-card ${isLowest ? 'critical-glow-red' : ''}">
                         <div class="race-header">
-                            <div class="race-name" style="color:${teamColor}; text-shadow:none;">
+                            <div class="race-name" style="color:${teamColor};">
                                 ${isLowest ? '<span class="blinking-warning">⚠️</span>' : ''}
                                 ${i === 0 ? '<span class="rotating-crown">👑</span>' : ''} 
                                 ${t.name} <span class="manager-name">(${t.sub})</span> 
-                                <span style="color:${growthCol}; font-size:10px; margin-left:8px; text-shadow: 0 0 5px ${growthCol};">
+                                <span style="color:${growthCol}; font-size:12px; margin-left:10px; text-shadow: 0 0 5px ${growthCol};">
                                     ${growth > 0 ? '+' : ''}${growth.toFixed(0)}%
                                 </span>
                             </div>
-                            <div class="race-pct" style="color: ${teamColor}; text-shadow: 0 0 8px ${teamColor};">${t.curr}%</div>
+                            <div class="race-pct" style="color: ${teamColor}; text-shadow: 0 0 10px ${teamColor};">${t.curr}%</div>
                         </div>
                         <div class="race-track">
-                            <div class="race-fill" style="width: ${t.curr}%; background: ${teamColor}; box-shadow: 0 0 15px ${teamColor}">
+                            <div class="race-fill" style="width: ${t.curr}%; background: ${teamColor}; box-shadow: 0 0 18px ${teamColor}">
                                 <span class="race-icon">${t.icon}</span>
                             </div>
                         </div>
@@ -186,7 +183,7 @@
                     return `
                         <div class="staff-card ${isCritical ? 'critical-glow-red' : ''}">
                             <div class="staff-tag ${s.sub}-bg">${s.sub}</div>
-                            <div class="staff-name" style="color:${teamColor}; text-shadow:none;">
+                            <div class="staff-name" style="color:${teamColor};">
                                 ${isWarning ? '<span class="blinking-warning">⚠️</span>' : ''}
                                 ${i === 0 ? '<span class="rotating-crown">👑</span>' : ''}${s.name}
                             </div>
@@ -195,9 +192,9 @@
                                 <span style="color:#eee">${s.curr}% ACHIEVED</span>
                             </div>
                             <div class="staff-bar">
-                                <div class="staff-fill" style="width: ${Math.min(s.curr, 100)}%; background: ${teamColor}; box-shadow: 0 0 10px ${teamColor}"></div>
+                                <div class="staff-fill" style="width: ${Math.min(s.curr, 100)}%; background: ${teamColor}; box-shadow: 0 0 12px ${teamColor}"></div>
                             </div>
-                            <div style="position:absolute; right:8px; top:10px; font-size:9px; font-weight:900; color:#888;">${trendIcon} #${currentRank}</div>
+                            <div style="position:absolute; right:10px; top:12px; font-size:10px; font-weight:900; color:#888;">${trendIcon} #${currentRank}</div>
                         </div>
                     `;
                 }).join('');
@@ -210,7 +207,7 @@
                 const topS = staff[0] || {name:'N/A', curr:0};
 
                 document.getElementById('ticker-text').innerText = 
-                    `Team Precious ${tP.icon} leading at ${tP.curr}% | Team Divine ${tD.icon} at ${tD.curr}% | Team Mine ${tM.icon} at ${tM.curr}% | Team Zoul ${tZ.icon} at ${tZ.curr}% | ${topS.name} Star Performer at ${topS.curr}% | managed by Suraj Prakash, v37.8`;
+                    `Team Precious ${tP.icon} leading at ${tP.curr}% | Team Divine ${tD.icon} at ${tD.curr}% | Team Mine ${tM.icon} at ${tM.curr}% | Team Zoul ${tZ.icon} at ${tZ.curr}% | ${topS.name} Star Performer at ${topS.curr}% | managed by Suraj Prakash, v37.9`;
 
             } catch (e) { console.error("Sync Error", e); }
         }
