@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGD Hesaraghatta v38.9</title>
+    <title>MGD Hesaraghatta v39.0</title>
     <style>
         :root {
             --bg-black: #050505;
@@ -25,7 +25,22 @@
             text-transform: uppercase;
         }
 
-        .neon-bar-glow { box-shadow: 0 0 18px currentColor; }
+        /* NEW: TOP RIGHT TIMESTAMP */
+        .timestamp {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            font-size: 10px;
+            font-weight: 900;
+            color: var(--divine);
+            text-shadow: 0 0 8px var(--divine);
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid var(--divine);
+            z-index: 1001;
+        }
+
         .critical-glow-red { border: 2px solid var(--neon-red-glow) !important; box-shadow: 0 0 25px var(--neon-red-glow) !important; }
         
         @keyframes blinker { 50% { opacity: 0; } }
@@ -79,6 +94,8 @@
 </head>
 <body>
 
+    <div class="timestamp" id="last-update">UPDATED ON: --</div>
+
     <div class="header">
         <h1 class="main-title">MGD HESARAGHATTA</h1>
         <div class="sub-title">MANAGED BY SURAJ PRAKASH</div>
@@ -96,7 +113,7 @@
     </div>
 
     <div class="ticker">
-        <div class="ticker-move" id="ticker-text">SYNCHRONIZING MGD HUB v38.9...</div>
+        <div class="ticker-move" id="ticker-text">SYNCHRONIZING MGD HUB v39.0...</div>
     </div>
 
     <script>
@@ -115,12 +132,19 @@
             try {
                 const response = await fetch(SHEET_CSV_URL);
                 const csvText = await response.text();
-                const rows = csvText.split('\n').slice(1);
+                const rows = csvText.split('\n');
                 
+                // NEW: Get timestamp from Cell I1 (Row 0, Column 8 in CSV)
+                const headerCols = rows[0].split(',');
+                if(headerCols[8]) {
+                    document.getElementById('last-update').innerText = "UPDATED ON: " + headerCols[8].trim();
+                }
+
+                const dataRows = rows.slice(1);
                 let teams = [];
                 let staff = [];
 
-                rows.forEach(row => {
+                dataRows.forEach(row => {
                     const cols = row.split(',');
                     if(cols.length < 4) return;
                     
@@ -133,7 +157,6 @@
                         icon: cols[5]?.trim() || '🏎️',
                         lastRank: cols[6] ? parseInt(cols[6].trim()) : null
                     };
-
                     if(entry.type === 'team') teams.push(entry);
                     else if(entry.type === 'staff') staff.push(entry);
                 });
@@ -214,11 +237,9 @@
                 const topS = staff[0] || {name:'N/A', curr:0};
 
                 document.getElementById('ticker-text').innerText = 
-                    `Team Precious ${tP.icon} leading at ${tP.curr}% | Team Divine ${tD.icon} at ${tD.curr}% | Team Mine ${tM.icon} at ${tM.curr}% | Team Zoul ${tZ.icon} at ${tZ.curr}% | ${topS.name} Star Performer at ${topS.curr}% | managed by Suraj Prakash, v38.9`;
+                    `Team Precious ${tP.icon} leading at ${tP.curr}% | Team Divine ${tD.icon} at ${tD.curr}% | Team Mine ${tM.icon} at ${tM.curr}% | Team Zoul ${tZ.icon} at ${tZ.curr}% | ${topS.name} Star Performer at ${topS.curr}% | managed by Suraj Prakash, v39.0`;
 
-            } catch (e) { 
-                console.error("Sync Error", e); 
-            }
+            } catch (e) { console.error("Sync Error", e); }
         }
 
         setInterval(updateDashboard, 30000);
