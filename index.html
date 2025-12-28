@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGD Hesaraghatta v39.4</title>
+    <title>MGD Hesaraghatta v39.3</title>
     <style>
         :root {
             --bg-black: #050505;
@@ -25,7 +25,6 @@
             text-transform: uppercase;
         }
 
-        /* FLOATING TIMESTAMP */
         .timestamp {
             position: fixed;
             top: 15px;
@@ -34,7 +33,7 @@
             font-weight: 900;
             color: var(--divine);
             text-shadow: 0 0 8px var(--divine);
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.5);
             padding: 5px 10px;
             border-radius: 5px;
             border: 1px solid var(--divine);
@@ -91,7 +90,7 @@
 </head>
 <body>
 
-    <div class="timestamp" id="last-update">UPDATED ON: SYNCING...</div>
+    <div class="timestamp" id="last-update">UPDATED ON: --</div>
 
     <div class="header">
         <h1 class="main-title">MGD HESARAGHATTA</h1>
@@ -110,12 +109,13 @@
     </div>
 
     <div class="ticker">
-        <div class="ticker-move" id="ticker-text">SYNCHRONIZING MGD HUB v39.4...</div>
+        <div class="ticker-move" id="ticker-text">SYNCHRONIZING MGD HUB v39.3...</div>
     </div>
 
     <script>
         const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS6tzd7SDpOQ6zHwIGlxNBRFGEG-62iLWa2wMyGyFgjxAWQC3KxP_qBicWEWuBaMsCz1Ydeq-im64_b/pub?gid=0&single=true&output=csv';
 
+        // NEW: Specific Deadline Logic (Jan 26, 2026)
         function updateDeadline() {
             const now = new Date();
             const targetDate = new Date('2026-01-26T00:00:00'); 
@@ -142,25 +142,22 @@
 
         async function updateDashboard() {
             try {
-                // Add cache busting to the fetch call
-                const response = await fetch(SHEET_CSV_URL + '&cache_bust=' + Date.now());
+                const response = await fetch(SHEET_CSV_URL);
                 const csvText = await response.text();
-                const allRows = csvText.split(/\r?\n/);
+                const rows = csvText.split('\n');
                 
-                // 1. Robust Timestamp Extraction (Cell I1 = Header Index 8)
-                const headerRow = allRows[0].split(',');
-                if(headerRow[8] && headerRow[8].trim() !== "") {
-                    document.getElementById('last-update').innerText = "UPDATED ON: " + headerRow[8].trim();
+                const headerCols = rows[0].split(',');
+                if(headerCols[8]) {
+                    document.getElementById('last-update').innerText = "UPDATED ON: " + headerCols[8].trim();
                 }
 
-                // 2. Data Parsing
-                const dataRows = allRows.slice(1);
+                const dataRows = rows.slice(1);
                 let teams = [];
                 let staff = [];
 
                 dataRows.forEach(row => {
                     const cols = row.split(',');
-                    if(cols.length < 4 || !cols[1]) return;
+                    if(cols.length < 4) return;
                     
                     const entry = {
                         type: cols[0]?.trim().toLowerCase(),
@@ -171,14 +168,12 @@
                         icon: cols[5]?.trim() || '🏎️',
                         lastRank: cols[6] ? parseInt(cols[6].trim()) : null
                     };
-
                     if(entry.type === 'team') teams.push(entry);
                     else if(entry.type === 'staff') staff.push(entry);
                 });
 
                 const lowestTeamScore = teams.length ? Math.min(...teams.map(t => t.curr)) : 0;
 
-                // TEAM RENDER
                 document.getElementById('team-racing').innerHTML = teams.map((t, i) => {
                     const growth = t.curr - t.prev;
                     const growthCol = growth > 0 ? "var(--neon-green-growth)" : "var(--neon-red-glow)";
@@ -199,14 +194,13 @@
                             <div class="race-pct" style="color: ${teamColor}; text-shadow: 0 0 10px ${teamColor};">${t.curr}%</div>
                         </div>
                         <div class="race-track">
-                            <div class="race-fill" style="width: ${Math.min(t.curr, 100)}%; background: ${teamColor}; box-shadow: 0 0 18px ${teamColor}">
+                            <div class="race-fill" style="width: ${t.curr}%; background: ${teamColor}; box-shadow: 0 0 18px ${teamColor}">
                                 <span class="race-icon">${t.icon}</span>
                             </div>
                         </div>
                     </div>
                 `}).join('');
 
-                // STAFF RENDER
                 staff.sort((a,b) => b.curr - a.curr);
                 document.getElementById('staff-leaderboard').innerHTML = staff.map((s, i) => {
                     const growth = s.curr - s.prev;
@@ -244,7 +238,6 @@
                     `;
                 }).join('');
 
-                // TICKER TEXT
                 const tP = teams.find(t => t.name === 'PRECIOUS') || {curr:0, icon:'🏎️'};
                 const tD = teams.find(t => t.name === 'DIVINE') || {curr:0, icon:'🏍️'};
                 const tM = teams.find(t => t.name === 'MINE') || {curr:0, icon:'🏃'};
@@ -252,14 +245,14 @@
                 const topS = staff[0] || {name:'N/A', curr:0};
 
                 document.getElementById('ticker-text').innerText = 
-                    `Team Precious ${tP.icon} at ${tP.curr}% | Team Divine ${tD.icon} at ${tD.curr}% | Team Mine ${tM.icon} at ${tM.curr}% | Team Zoul ${tZ.icon} at ${tZ.curr}% | ${topS.name} Leading at ${topS.curr}% | managed by Suraj Prakash, v39.4`;
+                    `Team Precious ${tP.icon} leading at ${tP.curr}% | Team Divine ${tD.icon} at ${tD.curr}% | Team Mine ${tM.icon} at ${tM.curr}% | Team Zoul ${tZ.icon} at ${tZ.curr}% | ${topS.name} Star Performer at ${topS.curr}% | managed by Suraj Prakash, v39.3`;
 
             } catch (e) { console.error("Sync Error", e); }
         }
 
         updateDeadline();
-        updateDashboard();
         setInterval(updateDashboard, 30000);
+        updateDashboard();
     </script>
 </body>
 </html>
